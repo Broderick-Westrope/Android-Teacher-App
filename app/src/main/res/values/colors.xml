@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="uws_red_faded">#9D2237</color>
+    <color name="uws_red">#990033</color>
+    <color name="uws_red_bright">#ED0033</color>
+    <color name="uws_coral">#FF5C5E</color>
+    <color name="uws_orange">#F44336</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
