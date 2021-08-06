@@ -21,4 +21,11 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
+
+    <!--  Used to override the action bar to avoid collisions with the navigation   -->
+    <style name="Theme.DoIt.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
 </resources>

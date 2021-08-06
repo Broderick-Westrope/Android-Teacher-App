@@ -7,8 +7,6 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.broderickwestrope.whiteboard.todolist.TodoActivity;
-
 import java.util.Objects;
 
 // This acts as our simple splash screen when the app is opened
@@ -22,7 +20,7 @@ public class SplashActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide(); // Hide the support action bar
 
         // Set the intent of moving to the main activity
-        final Intent i = new Intent(SplashActivity.this, TodoActivity.class);
+        final Intent i = new Intent(SplashActivity.this, MainActivity.class);
 
         // Delay moving from the splash screen to the main activity
         new Handler().postDelayed(new Runnable() {
