@@ -2,16 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mirage">
+    android:background="@color/mirage2">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:fontFamily="@font/fredericka_the_great"
-        android:text="Whiteboard"
-        android:textColor="@color/geyser"
-        android:textSize="60dp" />
+        android:text="Blackboard"
+        android:textSize="60dp"
+        android:textColor="@color/geyser"/>
 
     <TextView
         android:layout_width="wrap_content"

@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.todolist.TodoFragment;
+import com.broderickwestrope.whiteboard.todolist.TodoActivity;
 import com.broderickwestrope.whiteboard.todolist.Models.TaskModel;
 import com.broderickwestrope.whiteboard.todolist.TaskEditor;
 import com.broderickwestrope.whiteboard.todolist.Utils.DatabaseHandler;
@@ -24,11 +24,11 @@ import java.util.List;
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     private List<TaskModel> taskList;
-    private TodoFragment activity;
+    private TodoActivity activity;
     private DatabaseHandler db;
 
     // Constructor
-    public ToDoAdapter(DatabaseHandler db, TodoFragment activity) {
+    public ToDoAdapter(DatabaseHandler db, TodoActivity activity) {
         this.activity = activity;
         this.db = db;
     }
