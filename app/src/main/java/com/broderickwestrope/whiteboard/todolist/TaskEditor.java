@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard;
+package com.broderickwestrope.whiteboard.todolist;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -17,9 +17,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-import com.broderickwestrope.whiteboard.Models.TaskModel;
-import com.broderickwestrope.whiteboard.Utils.DatabaseHandler;
+import com.broderickwestrope.whiteboard.R;
+import com.broderickwestrope.whiteboard.todolist.Models.TaskModel;
+import com.broderickwestrope.whiteboard.todolist.Utils.DatabaseHandler;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.ncorti.slidetoact.SlideToActView;
 
 import java.util.Objects;
 
@@ -82,7 +84,7 @@ public class TaskEditor extends BottomSheetDialogFragment {
             assert task != null; // Make sure the task is not null
             if (task.length() > 0) {
                 // Set the color of the button to red (showing it is enabled)
-                saveTaskBtn.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
+                saveTaskBtn.setTextColor(ContextCompat.getColor(requireContext(), R.color.geyser));
             }
         }
         else {
@@ -107,7 +109,7 @@ public class TaskEditor extends BottomSheetDialogFragment {
                     saveTaskBtn.setTextColor(Color.GRAY); // Set the color to gray
                 } else { // If it is not empty
                     saveTaskBtn.setEnabled(true); //Enable the button
-                    saveTaskBtn.setTextColor(ContextCompat.getColor(requireContext(), R.color.white)); // Set the color to red
+                    saveTaskBtn.setTextColor(ContextCompat.getColor(requireContext(), R.color.geyser)); // Set the color to red
                 }
             }
 

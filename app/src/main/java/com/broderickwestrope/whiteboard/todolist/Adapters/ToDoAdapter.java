@@ -1,5 +1,6 @@
-package com.broderickwestrope.whiteboard.Adapters;
+package com.broderickwestrope.whiteboard.todolist.Adapters;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.broderickwestrope.whiteboard.MainActivity;
-import com.broderickwestrope.whiteboard.Models.TaskModel;
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.TaskEditor;
-import com.broderickwestrope.whiteboard.Utils.DatabaseHandler;
+import com.broderickwestrope.whiteboard.todolist.TodoActivity;
+import com.broderickwestrope.whiteboard.todolist.Models.TaskModel;
+import com.broderickwestrope.whiteboard.todolist.TaskEditor;
+import com.broderickwestrope.whiteboard.todolist.Utils.DatabaseHandler;
 
 import java.util.List;
 
@@ -23,11 +24,11 @@ import java.util.List;
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     private List<TaskModel> taskList;
-    private MainActivity activity;
+    private TodoActivity activity;
     private DatabaseHandler db;
 
     // Constructor
-    public ToDoAdapter(DatabaseHandler db, MainActivity activity) {
+    public ToDoAdapter(DatabaseHandler db, TodoActivity activity) {
         this.activity = activity;
         this.db = db;
     }
@@ -48,7 +49,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         holder.task.setChecked(item.getStatus() != 0); // Convert the int to bool and set the status of the task
 
         String location = item.getLocation();
-        if(location != null)
+        if (location != null)
             holder.location.setText(location);
         else
             holder.location.setEnabled(false);
@@ -75,12 +76,26 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     }
 
     // Used to delete a task at the given index
-    public void deleteItem(int index)
-    {
+    public void deleteItem(int index) {
         TaskModel item = taskList.get(index); // Get the item from the list
         db.deleteTask(item.getId()); // Remove the item from the database
         taskList.remove(index); // Remove the item from the list
         notifyItemRemoved(index); // Update the recycler view
+        if (taskList.size() <= 0)
+            activity.slideDeleteAll.setLocked(true);
+    }
+
+    // Used to delete all task items
+    public void deleteAll() {
+        int size = taskList.size();
+        for (int i = 0; i < size; i++) {
+            TaskModel item = taskList.get(i); // Get the item from the list
+            db.deleteTask(item.getId()); // Remove the item from the database
+        }
+
+        taskList.clear(); // Remove the item from the list
+        notifyItemRangeRemoved(0, size);
+//        notifyItemRemoved(index); // Update the recycler view
     }
 
     // Edit the item at the given index
@@ -93,6 +108,10 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         TaskEditor fragment = new TaskEditor(); // Create a new TaskEditor fragment
         fragment.setArguments(bundle); // Put the bundle in the fragment
         fragment.show(activity.getSupportFragmentManager(), TaskEditor.TAG); // Display the fragment
+    }
+
+    public Context getContext() {
+        return activity;
     }
 
     // Create a version of the RecyclerView ViewHolder with added checkbox

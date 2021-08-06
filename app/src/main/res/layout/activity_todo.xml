@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--    The title "Tasks" at the top of the screen     -->
+    <TextView
+        android:id="@+id/tasksTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="Tasks"
+        android:textColor="@color/froly"
+        android:textSize="32sp"
+        android:textStyle="bold" />
+
+    <!--  The container for our cards. These cards serve the purpose of being our tasks  -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tasksRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tasksTitle"
+        android:nestedScrollingEnabled="true"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <!--  The Floating button in the bottom right that lets us add a new task  -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/texas_rose"
+        android:src="@drawable/ic_baseline_add_24"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.ncorti.slidetoact.SlideToActView
+        android:id="@+id/slideDeleteAll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@+id/tasksTitle"
+        android:elevation="8dp"
+        app:animation_duration="400"
+        app:area_margin="5dp"
+        app:border_radius="24dp"
+        app:bump_vibration="50"
+        app:icon_margin="10dp"
+        app:slider_height="56dp"
+        app:slider_icon="@drawable/ic_baseline_delete_forever_24"
+        app:text="Delete All Tasks" />
+
+</RelativeLayout>

@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="uws_red_faded">#9D2237</color>
-    <color name="uws_red">#990033</color>
-    <color name="uws_red_bright">#ED0033</color>
-    <color name="uws_coral">#FF5C5E</color>
-    <color name="uws_orange">#F44336</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!--    <color name="uws_red_faded">#9D2237</color>-->
+    <!--    <color name="uws_red">#990033</color>-->
+    <!--    <color name="uws_red_bright">#ED0033</color>-->
+    <!--    <color name="uws_coral">#FF5C5E</color>-->
+    <!--    <color name="uws_orange">#F44336</color>-->
+    <!--    <color name="black">#FF000000</color>-->
+    <!--    <color name="white">#FFFFFFFF</color>-->
+
+
+    <color name="mirage">#171c28</color>
+    <color name="mirage2">#1d2433</color>
+    <color name="pickled_bluewood">#2f3b54</color>
+    <color name="hoki">#6679a4</color>
+    <color name="wild_blue_yonder">#8695b7</color>
+    <color name="cadet_blue">#a2aabc</color>
+    <color name="geyser">#d7dce2</color>
+    <color name="golden_tainoi">#ffcc66</color>
+    <color name="turquoise_blue">#5ccfe6</color>
+    <color name="yellow_green">#bae67e</color>
+    <color name="texas_rose">#ffae57</color>
+    <color name="grandis">#ffd580</color>
+    <color name="muave">#c3a6ff</color>
+    <color name="froly">#ef6b73</color>
 </resources>

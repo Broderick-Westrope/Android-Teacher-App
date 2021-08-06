@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/uws_red">
+    android:background="@color/grandis">
 
     <EditText
         android:id="@+id/newTaskTxt"
@@ -14,8 +14,8 @@
         android:background="@null"
         android:hint="Name/Description"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/white"
-        android:textColorHint="@color/uws_coral" />
+        android:textColor="@color/mirage2"
+        android:textColorHint="@color/hoki" />
 
     <EditText
         android:id="@+id/newTaskLocTxt"
@@ -30,8 +30,8 @@
         android:background="@null"
         android:hint="Location"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/white"
-        android:textColorHint="@color/uws_coral" />
+        android:textColor="@color/mirage2"
+        android:textColorHint="@color/hoki" />
 
     <Button
         android:id="@+id/saveTaskBtn"
@@ -63,7 +63,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:text="New Task:"
-        android:textColor="@color/white"
+        android:textColor="@color/mirage"
         android:textSize="30sp"
         android:textStyle="bold" />
 </RelativeLayout>

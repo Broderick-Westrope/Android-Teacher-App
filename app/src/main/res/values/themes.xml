@@ -2,16 +2,17 @@
     <!-- Base application theme. -->
     <style name="Theme.DoIt" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/uws_red</item>
-        <item name="colorPrimaryVariant">@color/uws_red_faded</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/mirage</item>
+        <item name="colorPrimaryVariant">@color/mirage2</item>
+        <item name="colorOnPrimary">@color/geyser</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/uws_coral</item>
-        <item name="colorSecondaryVariant">@color/uws_orange</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorSecondary">@color/hoki</item>
+        <item name="colorSecondaryVariant">@color/wild_blue_yonder</item>
+        <item name="colorOnSecondary">@color/muave</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:itemBackground">@color/mirage</item>
     </style>
 
     <!--  Custom Style for editing tasks in the to-do list  -->

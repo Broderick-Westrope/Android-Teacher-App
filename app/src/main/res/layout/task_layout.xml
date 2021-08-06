@@ -8,12 +8,14 @@
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    app:cardElevation="4dp"
+>
 
     <!--  This is the content container of our card  -->
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/mirage"
         android:padding="8dp">
 
         <!--    This is the checkbox for our task which is also how we add text/descritpion to it    -->
@@ -21,8 +23,9 @@
             android:id="@+id/taskCheckbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/uws_red"
+            android:buttonTint="@color/muave"
             android:paddingStart="8dp"
+            android:textColor="@color/geyser"
             tool:text="This is a sample" />
 
         <TextView
@@ -34,7 +37,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="1dp"
             android:text="Sample Location"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/cadet_blue"
             android:textSize="13sp" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

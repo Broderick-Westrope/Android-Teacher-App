@@ -1,40 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <!--    The title "Tasks" at the top of the screen     -->
-    <TextView
-        android:id="@+id/tasksTitle"
+    <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="Tasks"
-        android:textColor="@color/uws_red"
-        android:textSize="32sp"
-        android:textStyle="bold" />
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <!--  The container for our cards. These cards serve the purpose of being our tasks  -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tasksRV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tasksTitle"
-        android:nestedScrollingEnabled="true"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-    <!--  The Floating button in the bottom right that lets us add a new task  -->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabAddTask"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="32dp"
-        android:backgroundTint="@color/uws_red"
-        android:src="@drawable/ic_baseline_add_24" />
-
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
