@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 // This is our main to-do activity
-public class TodoActivity extends AppCompatActivity implements DialogCloseListener {
+public class TodoFragment extends AppCompatActivity implements DialogCloseListener {
 
     private RecyclerView tasksRV; // This is the element that contains our list elements
     private ToDoAdapter tasksAdapter; // This is

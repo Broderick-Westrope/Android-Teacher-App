@@ -11,7 +11,8 @@
         android:theme="@style/Theme.DoIt" >
         <activity
             android:name=".MainActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.DoIt.NoActionBar"/>
         <activity android:name=".SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".todolist.TodoActivity" />
+        <activity android:name=".todolist.TodoFragment" />
 
         <meta-data
             android:name="preloaded_fonts"
