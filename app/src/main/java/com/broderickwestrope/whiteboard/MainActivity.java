@@ -13,7 +13,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.broderickwestrope.whiteboard.todolist.TodoActivity;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.navView);
@@ -37,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         // Only set the page default on intitial load. Avoids resets for font size changes, rotation changes, memory optimisation (when in background), etc
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.navHome);
         }
@@ -51,7 +55,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new HomeFragment()).commit();
                 break;
             case R.id.navTodo:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new TodoFragment()).commit();
+                Intent intent = new Intent(this, TodoActivity.class);
+                startActivity(intent);
+                // getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new TodoFragment()).commit();
                 break;
             case R.id.navStudentRecords:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new RecordsFragment()).commit();
@@ -63,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new SettingsFragment()).commit();
                 break;
             case R.id.navHelp:
-                Intent helpPage = new Intent(Intent.ACTION_VIEW, Uri.parse("www.google.com"));
+                Intent helpPage = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
                 startActivity(helpPage);
                 break;
         }

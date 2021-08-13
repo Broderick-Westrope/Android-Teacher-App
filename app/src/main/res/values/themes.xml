@@ -13,6 +13,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
         <item name="android:itemBackground">@color/mirage</item>
+        <item name="android:fontFamily">@font/monolisa_regular</item>
     </style>
 
     <!--  Custom Style for editing tasks in the to-do list  -->

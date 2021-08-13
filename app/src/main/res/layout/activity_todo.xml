@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/mirage">
 
     <!--    The title "Tasks" at the top of the screen     -->
     <TextView
@@ -11,11 +12,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginBottom="16dp"
+        android:fontFamily="@font/fredericka_the_great"
         android:text="Tasks"
-        android:textColor="@color/froly"
-        android:textSize="32sp"
+        android:textColor="@color/geyser"
+        android:textSize="44sp"
         android:textStyle="bold" />
 
     <!--  The container for our cards. These cards serve the purpose of being our tasks  -->
@@ -38,7 +40,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
-        android:backgroundTint="@color/texas_rose"
+        android:backgroundTint="@color/cadet_blue"
         android:src="@drawable/ic_add"
         tools:ignore="SpeakableTextPresentCheck" />
 
@@ -54,12 +56,16 @@
         android:layout_toEndOf="@+id/tasksTitle"
         android:elevation="8dp"
         app:animation_duration="400"
-        app:area_margin="5dp"
-        app:border_radius="24dp"
+        app:area_margin="3dp"
+        app:border_radius="20dp"
         app:bump_vibration="50"
         app:icon_margin="10dp"
-        app:slider_height="56dp"
+        app:text_size="16dp"
+        app:outer_color="@color/froly"
+        app:slider_height="50dp"
+
         app:slider_icon="@drawable/ic_delete_forever"
         app:text="Delete All Tasks" />
+
 
 </RelativeLayout>

@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grandis">
+    android:background="@color/cadet_blue">
 
     <EditText
         android:id="@+id/newTaskTxt"
@@ -11,27 +11,24 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
-        android:background="@null"
         android:hint="Name/Description"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/mirage2"
-        android:textColorHint="@color/hoki" />
+        android:textColorHint="@color/pickled_bluewood" />
 
     <EditText
         android:id="@+id/newTaskLocTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/divider"
+        android:layout_below="@+id/newTaskTxt"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="3dp"
         android:layout_marginEnd="100dp"
-        android:background="@null"
         android:hint="Location"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/mirage2"
-        android:textColorHint="@color/hoki" />
+        android:textColorHint="@color/pickled_bluewood" />
 
     <Button
         android:id="@+id/saveTaskBtn"
@@ -43,16 +40,8 @@
         android:background="@android:color/transparent"
         android:enabled="false"
         android:text="Save"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/geyser"
         android:textSize="16dp" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@+id/newTaskTxt"
-        android:layout_marginTop="3dp"
-        android:background="?android:attr/listDivider" />
 
     <TextView
         android:id="@+id/changeTitleTxt"
@@ -62,8 +51,16 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:text="New Task:"
+        android:text="New Task"
         android:textColor="@color/mirage"
         android:textSize="30sp"
         android:textStyle="bold" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/newTaskLocTxt"
+        android:layout_marginTop="30dp"
+        android:background="?android:attr/listDivider" />
 </RelativeLayout>

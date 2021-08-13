@@ -2,7 +2,6 @@ package com.broderickwestrope.whiteboard.todolist;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,7 +20,6 @@ import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.todolist.Models.TaskModel;
 import com.broderickwestrope.whiteboard.todolist.Utils.DatabaseHandler;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.ncorti.slidetoact.SlideToActView;
 
 import java.util.Objects;
 
@@ -29,6 +27,9 @@ import java.util.Objects;
 public class TaskEditor extends BottomSheetDialogFragment {
 
     public static final String TAG = "ActionBottomDialog";
+
+    int enabledColor = R.color.mirage2;
+    int disabledColor = R.color.geyser;
 
     private TextView changeTitleTxt; // The title either reading "Edit Task" or "New Task"
     private EditText editTaskTxt; // The field for the task name/description input
@@ -77,18 +78,18 @@ public class TaskEditor extends BottomSheetDialogFragment {
             String task = bundle.getString("task"); // Get the task text
             String location = bundle.getString("location");
 
-            changeTitleTxt.setText("Edit Task:"); // Display that the user is editing an existing task
+            changeTitleTxt.setText("Edit Task"); // Display that the user is editing an existing task
             editTaskTxt.setText(task); // Display the task in the input field
             editLocTxt.setText(location); // Display the location in the input field
 
             assert task != null; // Make sure the task is not null
             if (task.length() > 0) {
                 // Set the color of the button to red (showing it is enabled)
-                saveTaskBtn.setTextColor(ContextCompat.getColor(requireContext(), R.color.geyser));
+                saveTaskBtn.setEnabled(true);
+                saveTaskBtn.setTextColor(ContextCompat.getColor(requireContext(), enabledColor));
             }
-        }
-        else {
-            changeTitleTxt.setText("New Task:"); // Display that the user is creating a new task
+        } else {
+            changeTitleTxt.setText("New Task"); // Display that the user is creating a new task
         }
 
         db = new DatabaseHandler(getActivity()); // Create a new database handler
@@ -106,10 +107,10 @@ public class TaskEditor extends BottomSheetDialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().equals("")) { // If it is now empty
                     saveTaskBtn.setEnabled(false); //Disable the button
-                    saveTaskBtn.setTextColor(Color.GRAY); // Set the color to gray
+                    saveTaskBtn.setTextColor(ContextCompat.getColor(requireContext(), disabledColor)); // Set the color to gray
                 } else { // If it is not empty
                     saveTaskBtn.setEnabled(true); //Enable the button
-                    saveTaskBtn.setTextColor(ContextCompat.getColor(requireContext(), R.color.geyser)); // Set the color to red
+                    saveTaskBtn.setTextColor(ContextCompat.getColor(requireContext(), enabledColor)); // Set the enabled color
                 }
             }
 

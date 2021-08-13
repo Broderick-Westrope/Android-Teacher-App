@@ -20,7 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".todolist.TodoFragment" />
+        <activity android:name=".todolist.TodoActivity" />
 
         <meta-data
             android:name="preloaded_fonts"

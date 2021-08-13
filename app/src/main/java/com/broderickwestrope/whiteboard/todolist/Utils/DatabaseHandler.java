@@ -56,8 +56,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(TASK, task.getTask()); // Add the task name/description
         cv.put(STATUS, 0); // Add the default value of incomplete
 
-
-
         // Use the given insert function to avoid writing raw SQL. This inserts cv into TODO_TABLE, ignoring no columns
         db.insert(TODO_TABLE, null, cv);
     }

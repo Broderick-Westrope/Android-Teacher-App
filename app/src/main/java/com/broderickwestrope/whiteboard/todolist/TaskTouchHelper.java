@@ -70,7 +70,7 @@ public class TaskTouchHelper extends ItemTouchHelper.SimpleCallback {
 
         if (dX > 0) {
             icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.ic_edit);
-            background = new ColorDrawable(ContextCompat.getColor(adapter.getContext(), R.color.yellow_green));
+            background = new ColorDrawable(ContextCompat.getColor(adapter.getContext(), R.color.turquoise_blue));
         } else {
             icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.ic_delete);
             background = new ColorDrawable(Color.RED);

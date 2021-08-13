@@ -1,34 +1,37 @@
 package com.broderickwestrope.whiteboard.todolist.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.todolist.TodoFragment;
 import com.broderickwestrope.whiteboard.todolist.Models.TaskModel;
 import com.broderickwestrope.whiteboard.todolist.TaskEditor;
+import com.broderickwestrope.whiteboard.todolist.TodoActivity;
 import com.broderickwestrope.whiteboard.todolist.Utils.DatabaseHandler;
 
 import java.util.List;
+import java.util.Random;
 
 // The wrapper/adapter between the database and the recycler view
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     private List<TaskModel> taskList;
-    private TodoFragment activity;
+    private TodoActivity activity;
     private DatabaseHandler db;
 
     // Constructor
-    public ToDoAdapter(DatabaseHandler db, TodoFragment activity) {
+    public ToDoAdapter(DatabaseHandler db, TodoActivity activity) {
         this.activity = activity;
         this.db = db;
     }
@@ -47,6 +50,13 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
         holder.task.setText(item.getTask()); // Set the text to the task's text
         holder.task.setChecked(item.getStatus() != 0); // Convert the int to bool and set the status of the task
+
+        //Random color for card background :)
+        Random random = new Random();
+        String[] colorArray = getContext().getResources().getStringArray(R.array.card_colors);
+        String randomColorName = colorArray[random.nextInt(colorArray.length)];
+//        String randomColorResource = "R.color." + randomColorName;
+        holder.card.setBackgroundColor(Color.parseColor(randomColorName));
 
         String location = item.getLocation();
         if (location != null)
@@ -118,11 +128,13 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         CheckBox task; // CheckBox for the status of our task
         TextView location;
+        RelativeLayout card;
 
         ViewHolder(View view) {
             super(view); // Execute the super of the function
             task = view.findViewById(R.id.taskCheckbox); // Set the checkbox to the one in task_layout
             location = view.findViewById(R.id.locationTxt); // Set the text view to the one in task_layout
+            card = view.findViewById(R.id.layoutCard);
         }
     }
 }
