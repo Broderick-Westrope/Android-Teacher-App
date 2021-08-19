@@ -20,7 +20,8 @@
             android:background="@color/mirage"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextColor="@color/geyser" />
 
         <FrameLayout
             android:id="@+id/fragmentContainer"

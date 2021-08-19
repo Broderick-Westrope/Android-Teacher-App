@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.navSettings:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new SettingsFragment()).commit();
                 break;
-            case R.id.navHelp:
-                Intent helpPage = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+            case R.id.navContactDev:
+                Intent helpPage = new Intent(Intent.ACTION_VIEW, Uri.parse("https://broderickwestrope.carrd.co/"));
                 startActivity(helpPage);
                 break;
         }

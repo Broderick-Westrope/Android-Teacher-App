@@ -3,9 +3,15 @@ package com.broderickwestrope.whiteboard.todolist;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,40 +21,44 @@ import com.broderickwestrope.whiteboard.todolist.Adapters.ToDoAdapter;
 import com.broderickwestrope.whiteboard.todolist.Models.TaskModel;
 import com.broderickwestrope.whiteboard.todolist.Utils.DatabaseHandler;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.ncorti.slidetoact.SlideToActView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 // This is our main to-do activity
 public class TodoActivity extends AppCompatActivity implements DialogCloseListener {
 
-    private RecyclerView tasksRV; // This is the element that contains our list elements
-    private ToDoAdapter tasksAdapter; // This is
-    private FloatingActionButton fabAddTask;
-    public SlideToActView slideDeleteAll;
-
+    private ToDoAdapter tasksAdapter;
     private List<TaskModel> taskList;
     private DatabaseHandler db;
+
+    public View deleteAllView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo);
-        Objects.requireNonNull(getSupportActionBar()).hide();
+
+        // Set up the support action bar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Tasks");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         db = new DatabaseHandler(this);
         db.openDatabase();
 
-        slideDeleteAll = findViewById(R.id.slideDeleteAll);
-        tasksRV = findViewById(R.id.tasksRV);
+
+        deleteAllView = findViewById(R.id.deleteAllAction);
+        // This is the element that contains our list elements
+        RecyclerView tasksRV = findViewById(R.id.tasksRV);
         tasksRV.setLayoutManager(new LinearLayoutManager(this));
         tasksAdapter = new ToDoAdapter(db, this);
         tasksRV.setAdapter(tasksAdapter);
 
-        fabAddTask = findViewById(R.id.fabAddTask);
+        FloatingActionButton fabAddTask = findViewById(R.id.fabAddTask);
         ItemTouchHelper touchHelper = new ItemTouchHelper(new TaskTouchHelper(tasksAdapter));
         touchHelper.attachToRecyclerView(tasksRV);
 
@@ -56,7 +66,8 @@ public class TodoActivity extends AppCompatActivity implements DialogCloseListen
         taskList = db.getAllTasks();
         Collections.reverse(taskList);
         tasksAdapter.setTasks(taskList);
-        slideDeleteAll.setLocked(taskList.isEmpty());
+
+//        deleteAllView.setEnabled(false);
 
         fabAddTask.setOnClickListener(new View.OnClickListener() {
 
@@ -65,20 +76,30 @@ public class TodoActivity extends AppCompatActivity implements DialogCloseListen
                 TaskEditor.newInstance().show(getSupportFragmentManager(), TaskEditor.TAG);
             }
         });
-
-        slideDeleteAll.setOnSlideCompleteListener(new SlideToActView.OnSlideCompleteListener() {
-
-            @Override
-            public void onSlideComplete(SlideToActView slideToActView) {
-                deleteAll();
-                slideDeleteAll.resetSlider();
-                slideDeleteAll.setLocked(true);
-            }
-        });
     }
 
-    private void deleteAll()
-    {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.tasks_menu, menu);
+        return true;
+    }
+
+    // Go back home on arrow press
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.deleteAllAction:
+                deleteAll();
+                return true;
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteAll() {
         AlertDialog.Builder builder = new AlertDialog.Builder(tasksAdapter.getContext()); //has no contents!!!!!!!!!!!!!!!
         builder.setTitle("Delete All Tasks");
         builder.setMessage("Are you sure you want to delete all tasks?");
@@ -91,10 +112,8 @@ public class TodoActivity extends AppCompatActivity implements DialogCloseListen
         });
 
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                tasksAdapter.notifyDataSetChanged();
             }
         });
         AlertDialog dialog = builder.create();
@@ -107,6 +126,6 @@ public class TodoActivity extends AppCompatActivity implements DialogCloseListen
         Collections.reverse(taskList);
         tasksAdapter.setTasks(taskList);
         tasksAdapter.notifyDataSetChanged();
-        slideDeleteAll.setLocked(taskList.isEmpty());
+        deleteAllView.setEnabled(!taskList.isEmpty());
     }
 }

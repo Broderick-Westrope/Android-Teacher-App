@@ -83,6 +83,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     public void setTasks(List<TaskModel> todoList) {
         this.taskList = todoList; // Set local to the given tasks
         notifyDataSetChanged(); // Notify any concerned members that the data has changed (this is mainly for updating the recycler view)
+        activity.deleteAllView.setEnabled(!this.taskList.isEmpty());
     }
 
     // Used to delete a task at the given index
@@ -92,7 +93,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         taskList.remove(index); // Remove the item from the list
         notifyItemRemoved(index); // Update the recycler view
         if (taskList.size() <= 0)
-            activity.slideDeleteAll.setLocked(true);
+            activity.deleteAllView.setEnabled(false);
     }
 
     // Used to delete all task items
@@ -105,6 +106,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
         taskList.clear(); // Remove the item from the list
         notifyItemRangeRemoved(0, size);
+        activity.deleteAllView.setEnabled(false);
 //        notifyItemRemoved(index); // Update the recycler view
     }
 

@@ -69,7 +69,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
             // By setting all the values to null we select the entire database with no extra criteria
-            cursor = db.query(TODO_TABLE, null, null, null, null, null, null);
+            cursor = db.query(TODO_TABLE, null, null, null, null, null, STATUS + " DESC");
             if (cursor != null) // If the cursor is not empty (ie. we selected some data)
             {
                 if (cursor.moveToFirst()) // Move the cursor to the first row (from the last row). False if the cursor is empty
