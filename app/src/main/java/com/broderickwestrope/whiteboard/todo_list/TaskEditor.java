@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.todolist;
+package com.broderickwestrope.whiteboard.todo_list;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -17,8 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.todolist.Models.TaskModel;
-import com.broderickwestrope.whiteboard.todolist.Utils.TaskDBManager;
+import com.broderickwestrope.whiteboard.todo_list.Models.TaskModel;
+import com.broderickwestrope.whiteboard.todo_list.Utils.TaskDBManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.Objects;
@@ -67,7 +67,7 @@ public class TaskEditor extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Collect the references to the views
-        changeTitleTxt = requireView().findViewById(R.id.changeTitleTxt);
+        changeTitleTxt = requireView().findViewById(R.id.editRecord_Title);
         editTaskTxt = requireView().findViewById(R.id.newTaskTxt);
         editLocTxt = requireView().findViewById(R.id.newTaskLocTxt);
         saveTaskBtn = requireView().findViewById(R.id.saveTaskBtn);

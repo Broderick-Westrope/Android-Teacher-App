@@ -1,0 +1,153 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cadet_blue">
+
+    <!--  Row 1  -->
+
+    <TextView
+        android:id="@+id/editRecord_Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="New Record"
+        android:textColor="@color/mirage"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/editRecord_Image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:adjustViewBounds="true"
+        android:background="@color/mirage"
+        android:padding="1dp"
+        app:layout_collapseMode="parallax"
+        app:layout_collapseParallaxMultiplier="0.7" />
+
+    <!--  Row 2  -->
+
+    <EditText
+        android:id="@+id/editRecord_StudentID"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editRecord_Title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:hint="Student ID"
+        android:inputType="number"
+        android:maxLength="8"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/mirage2"
+
+        android:textColorHint="@color/pickled_bluewood" />
+
+    <EditText
+        android:id="@+id/editRecord_Age"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editRecord_Title"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@id/editRecord_StudentID"
+
+        android:ellipsize="end"
+        android:hint="Age"
+        android:inputType="number"
+        android:maxLength="3"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/mirage2"
+        android:textColorHint="@color/pickled_bluewood" />
+
+    <!--  Row 3  -->
+
+    <EditText
+        android:id="@+id/editRecord_Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editRecord_StudentID"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="120dp"
+        android:hint="Name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/mirage2"
+        android:textColorHint="@color/pickled_bluewood" />
+
+    <!--  Row 4  -->
+
+    <Spinner
+        android:id="@+id/editRecord_Gender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editRecord_Image"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
+        android:entries="@array/genders" />
+
+    <EditText
+        android:id="@+id/editRecord_Address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editRecord_Name"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:hint="Address"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/mirage2"
+        android:textColorHint="@color/pickled_bluewood" />
+
+    <!--  Row 5  -->
+
+    <EditText
+        android:id="@+id/editRecord_Course"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editRecord_Address"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="120dp"
+        android:hint="Course"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/mirage2"
+        android:textColorHint="@color/pickled_bluewood" />
+
+    <Button
+        android:id="@+id/saveRecordBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editRecord_Address"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:background="@android:color/transparent"
+        android:text="Save"
+        android:textColor="@color/geyser"
+        android:textSize="16dp" />
+
+    <!--  Row 6  -->
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/editRecord_Course"
+        android:layout_marginTop="15dp"
+        android:background="?android:attr/listDivider" />
+</RelativeLayout>

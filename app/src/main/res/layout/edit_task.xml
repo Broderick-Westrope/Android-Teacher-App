@@ -7,7 +7,7 @@
         android:id="@+id/newTaskTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/changeTitleTxt"
+        android:layout_below="@+id/editRecord_Title"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
@@ -44,7 +44,7 @@
         android:textSize="16dp" />
 
     <TextView
-        android:id="@+id/changeTitleTxt"
+        android:id="@+id/editRecord_Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"

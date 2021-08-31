@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.todolist;
+package com.broderickwestrope.whiteboard.todo_list;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -15,13 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.todolist.Adapters.ToDoAdapter;
-import com.broderickwestrope.whiteboard.todolist.Models.TaskModel;
-import com.broderickwestrope.whiteboard.todolist.Utils.TaskDBManager;
+import com.broderickwestrope.whiteboard.todo_list.Adapters.ToDoAdapter;
+import com.broderickwestrope.whiteboard.todo_list.Models.TaskModel;
+import com.broderickwestrope.whiteboard.todo_list.Utils.TaskDBManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 // This is our activity containing all of the elements for our to-do list

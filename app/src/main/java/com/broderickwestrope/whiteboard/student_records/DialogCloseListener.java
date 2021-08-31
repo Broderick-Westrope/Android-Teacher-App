@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.todolist;
+package com.broderickwestrope.whiteboard.student_records;
 
 import android.content.DialogInterface;
 

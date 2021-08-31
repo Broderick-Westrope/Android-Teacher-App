@@ -1,11 +1,13 @@
-package com.broderickwestrope.whiteboard.todolist;
+package com.broderickwestrope.whiteboard.student_records;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import static androidx.core.content.ContextCompat.getSystemService;
+
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Vibrator;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -14,14 +16,14 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.todolist.Adapters.ToDoAdapter;
+import com.broderickwestrope.whiteboard.student_records.Adapters.RecordAdapter;
 
-// THis is a touch helper, allowing us to have swipe actions for our tasks (such as edit and delete)
-public class TaskTouchHelper extends ItemTouchHelper.SimpleCallback {
-    private ToDoAdapter adapter; // The adapter for the recycler view
+// THis is a touch helper, allowing us to have swipe actions for our records (such as edit and delete)
+public class RecordTouchHelper extends ItemTouchHelper.SimpleCallback {
+    private RecordAdapter adapter; // The adapter for the recycler view
 
     // The class constructor
-    public TaskTouchHelper(ToDoAdapter adapter) {
+    public RecordTouchHelper(RecordAdapter adapter) {
         // Set the two swipe-types we want to use (left and right
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         this.adapter = adapter; //Set the local adapter to the given adapter (this will be the adapter made by the TodoActivity)
@@ -36,38 +38,16 @@ public class TaskTouchHelper extends ItemTouchHelper.SimpleCallback {
     // Whenever an element is "swiped" this function will run
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        // Get the index of the task that was swiped
+        // Get the index of the record that was swiped
         final int index = viewHolder.getAbsoluteAdapterPosition();
 
-        // If the task was swiped left
+        // If the record was swiped left
         if (direction == ItemTouchHelper.LEFT) {
-            // Create an alert builder for our warning message
-            AlertDialog.Builder builder = new AlertDialog.Builder(adapter.getContext());
-            builder.setTitle("Delete Task"); // Set the title of the alert
-            builder.setMessage("Are you sure you want to delete this task?"); // Set the contents of the alert
-
-            // Set the positive button
-            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //Continue to delete the item
-                    adapter.deleteItem(index);
-                }
-            });
-
-            //Set the negative button
-            builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Cancel the deletion and reset the swiped task to the center
-                    adapter.notifyItemChanged(index);
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        } else { // Else, if the task was swiped right
-            // Call the function for editing the task
-            adapter.editItem(index);
+            // Call the function for deleting the record
+            adapter.deleteItem(index);
+        } else { // Else, if the record was swiped right
+            // Call the function for editing the record
+            adapter.editRecord(index);
         }
     }
 
@@ -79,17 +59,17 @@ public class TaskTouchHelper extends ItemTouchHelper.SimpleCallback {
         Drawable icon; // The icon for the action (ie. bin for delete)
         ColorDrawable background; // The colored background of the swipe
 
-        View itemView = viewHolder.itemView; // The view of the task (this allows us to match its dimensions)
+        View itemView = viewHolder.itemView; // The view of the record (this allows us to match its dimensions)
         int backgroundCornerOffset = 20;
 
         // Depending on the value along the X axis, we set a different background color
         if (dX > 0) {
-            // When X is greater-than 0 it means we have swiped to the right and are trying to edit the task
+            // When X is greater-than 0 it means we have swiped to the right and are trying to edit the record
             // For this we use the edit symbol and a turquoise color
             icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.ic_edit);
             background = new ColorDrawable(ContextCompat.getColor(adapter.getContext(), R.color.turquoise_blue));
         } else {
-            // When X is less-than 0 it means we have swiped to the left and are trying to delete the task
+            // When X is less-than 0 it means we have swiped to the left and are trying to delete the record
             // For this we use the bin symbol and a red color
             icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.ic_delete);
             background = new ColorDrawable(Color.RED);

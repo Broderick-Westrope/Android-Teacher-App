@@ -13,7 +13,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.broderickwestrope.whiteboard.todolist.TodoActivity;
+import com.broderickwestrope.whiteboard.student_records.RecordsActivity;
+import com.broderickwestrope.whiteboard.todo_list.TodoActivity;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
@@ -54,11 +55,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new HomeFragment()).commit();
                 break;
             case R.id.navTodo:
-                Intent intent = new Intent(this, TodoActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(this, TodoActivity.class));
                 break;
             case R.id.navStudentRecords:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new RecordsFragment()).commit();
+                startActivity(new Intent(this, RecordsActivity.class));
                 break;
             case R.id.navGallery:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new GalleryFragment()).commit();

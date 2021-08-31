@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.todolist.Adapters;
+package com.broderickwestrope.whiteboard.todo_list.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -15,10 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.todolist.Models.TaskModel;
-import com.broderickwestrope.whiteboard.todolist.TaskEditor;
-import com.broderickwestrope.whiteboard.todolist.TodoActivity;
-import com.broderickwestrope.whiteboard.todolist.Utils.TaskDBManager;
+import com.broderickwestrope.whiteboard.todo_list.Models.TaskModel;
+import com.broderickwestrope.whiteboard.todo_list.TaskEditor;
+import com.broderickwestrope.whiteboard.todo_list.TodoActivity;
+import com.broderickwestrope.whiteboard.todo_list.Utils.TaskDBManager;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 import java.util.Random;
@@ -91,6 +92,17 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         db.deleteTask(item.getId()); // Remove the item from the database
         taskList.remove(index); // Remove the item from the list
         notifyItemRemoved(index); // Update the recycler view
+
+        // Create a snackbar to say that the entry was deleted and allow the user to undo this if it was a mistake
+        Snackbar.make(getContext(), activity.findViewById(R.id.content), "Task Deleted.", Snackbar.LENGTH_SHORT).setAction("UNDO", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                taskList.add(item); // Add to the local list
+                db.insertTask(item); // Add to the database
+                notifyItemInserted(taskList.size() - 1); // Update the recycler view
+            }
+        }).show();
+
     }
 
     // Used to delete all task items
