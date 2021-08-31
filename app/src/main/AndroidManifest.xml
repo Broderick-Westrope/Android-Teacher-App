@@ -18,10 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Whiteboard">
         <activity
+            android:name=".exams.ExamsActivity"
+            android:exported="true" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Whiteboard.RootNoActionBar" />
-
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,11 +31,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".todo_list.TodoActivity"
             android:theme="@style/Theme.Whiteboard.BranchNoActionBar" />
-
         <activity
             android:name=".student_records.RecordsActivity"
             android:theme="@style/Theme.Whiteboard.BranchNoActionBar" />

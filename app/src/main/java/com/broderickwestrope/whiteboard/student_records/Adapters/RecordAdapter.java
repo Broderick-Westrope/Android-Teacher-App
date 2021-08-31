@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -59,6 +60,17 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         String[] colorArray = getContext().getResources().getStringArray(R.array.card_colors);
         String randomColorName = colorArray[random.nextInt(colorArray.length)];
         holder.card.setBackgroundColor(Color.parseColor(randomColorName));
+
+        // Listen for clicks on the "EXAMS" button to view the students exams
+        holder.viewExamsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO Remove this debugging snackbar
+                Snackbar.make(getContext(), activity.findViewById(R.id.content), "CLICKED ID:" + String.valueOf(item.getId()) + " NAME: " + item.getName(), Snackbar.LENGTH_SHORT).show();
+
+
+            }
+        });
     }
 
     // Returns the number of records in our list of records (ie. the length of the to-do list)
@@ -127,6 +139,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView studentID, name, gender, course, age, address; // TextViews for remaining components of the student record
         RelativeLayout card; // A "card" that everything is displayed on (this is so we can change the color)
+        Button viewExamsBtn; // The button to view exams for the corresponding student
 
         ViewHolder(View view) {
             super(view); // Execute the base function
@@ -137,6 +150,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
             age = view.findViewById(R.id.record_Age); // Set the text view to the one in record_layout
             address = view.findViewById(R.id.record_Address); // Set the text view to the one in record_layout
             card = view.findViewById(R.id.layoutCard); // Set the relative layout to the one in record_layout
+            viewExamsBtn = view.findViewById(R.id.viewExamsBtn); // Set the button to the on in record_layout
         }
     }
 }

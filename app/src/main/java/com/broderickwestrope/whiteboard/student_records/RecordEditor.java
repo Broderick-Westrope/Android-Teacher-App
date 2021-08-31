@@ -56,7 +56,7 @@ public class RecordEditor extends BottomSheetDialogFragment {
 
     // Holds the instance of the activity
     private RecordsActivity activity;
-    
+
     // Views within our fragment:
     private TextView changeTitleTxt; // The title either reading "Edit Record" or "New Record"
     private EditText editRecord_StudentID; // The field for the record student ID input

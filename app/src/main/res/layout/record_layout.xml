@@ -54,10 +54,12 @@
 
         <TextView
             android:id="@+id/record_Course"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/record_StudentID"
             android:layout_marginTop="3dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/record_Gender"
             android:fontFamily="@font/monolisa_regular"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
@@ -87,12 +89,26 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/record_Course"
             android:layout_marginTop="3dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/viewExamsBtn"
             android:fontFamily="@font/monolisa_regular"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:text="47 Atlantic Boulevard, Elderslie, NSW"
             android:textColor="@color/mirage2"
             android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/viewExamsBtn"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/record_Gender"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:background="@color/mirage"
+            android:text="Exams"
+            android:textColor="@color/geyser"
+            android:textSize="10sp" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

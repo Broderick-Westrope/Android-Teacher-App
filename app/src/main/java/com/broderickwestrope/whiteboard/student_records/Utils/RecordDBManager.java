@@ -65,7 +65,7 @@ public class RecordDBManager extends SQLiteOpenHelper {
         cv.put(AGE, record.getAge()); // Add the age
         cv.put(ADDRESS, record.getAddress()); // Add the address
 
-        // Use the given insert function to avoid writing raw SQL. This inserts the values into the TODO_TABLE, ignoring no columns
+        // Use the given insert function to avoid writing raw SQL. This inserts the values into the RECORDS_TABLE, ignoring no columns
         db.insert(RECORDS_TABLE, null, cv);
     }
 
