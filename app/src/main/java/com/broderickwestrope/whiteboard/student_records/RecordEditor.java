@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,7 @@ public class RecordEditor extends BottomSheetDialogFragment {
 
     // Holds the instance of the activity
     private RecordsActivity activity;
-
+    
     // Views within our fragment:
     private TextView changeTitleTxt; // The title either reading "Edit Record" or "New Record"
     private EditText editRecord_StudentID; // The field for the record student ID input
@@ -71,15 +72,6 @@ public class RecordEditor extends BottomSheetDialogFragment {
     public RecordEditor(RecordsActivity activity) {
         this.activity = activity;
     }
-
-//    public RecordEditor() {
-//
-//    }
-//
-//    // For creating a new instance of this fragment
-//    public static RecordEditor newInstance() {
-//        return new RecordEditor();
-//    }
 
     // Add our custom style to the on create method
     @Override
@@ -182,92 +174,103 @@ public class RecordEditor extends BottomSheetDialogFragment {
             dismiss(); // Dismiss the record editor fragment (this)
         });
 
-        // When the user clicks the image we want to let them pick a new image
+        // When the user clicks the image we want to let them pick a new image if we have the permissions
         studentImage.setOnClickListener(v -> {
-            if (checkAndRequestPermissions(activity)) {
+            if (checkImagePermissions(activity)) {
                 selectImage(getContext());
             }
         });
     }
 
-    public boolean checkAndRequestPermissions(final Activity context) {
-        int WExtstorePermission = ContextCompat.checkSelfPermission(context,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        int cameraPermission = ContextCompat.checkSelfPermission(context,
-                Manifest.permission.CAMERA);
-        List<String> listPermissionsNeeded = new ArrayList<>();
-        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.CAMERA);
+    // Checks if we have the required permissions for using the gallery and camera, and if not then it attempts to get them
+    public boolean checkImagePermissions(final Activity context) {
+        // Get the permission value of writing to external storage
+        int permission_externalStorageWrite = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        // Get the permission value of using the camera
+        int permission_camera = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA);
+
+        // Depending on what permissions we already have, construct a list of permissions we need to get
+        List<String> permissionsList = new ArrayList<>();
+        if (permission_camera != PackageManager.PERMISSION_GRANTED) { // Camera Permission
+            permissionsList.add(Manifest.permission.CAMERA);
         }
-        if (WExtstorePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission_externalStorageWrite != PackageManager.PERMISSION_GRANTED) { // Write to External Storage Permission (for saving photos)
+            permissionsList.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
-        if (!listPermissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(context, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), 101);
+
+        // If we don't yet have all the permissions we need
+        if (!permissionsList.isEmpty()) {
+            // Request the permissions and then let the user try again to access photos
+            ActivityCompat.requestPermissions(context, permissionsList.toArray(new String[permissionsList.size()]), 101);
             return false;
         }
         return true;
     }
 
 
+    // Used to either take an image with the camera or select an image from the devices gallery
     private void selectImage(Context context) {
-        final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery", "Exit"}; // create a menuOption Array
-        // create a dialog for showing the optionsMenu
+        //Create an array for the menu options
+        final CharSequence[] optionsMenu = {"Take Photo", "Choose from Gallery", "Cancel"};
+        // Create an alert dialogue to house these menu options
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        // set the items in builder
+        // Put the options in the alter dialogue and set their corresponding actions for onClick
         builder.setItems(optionsMenu, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (optionsMenu[i].equals("Take Photo")) {
-                    // Open the camera and get the photo
+                if (optionsMenu[i].equals("Take Photo")) { //When the user chooses to take a photo with the camera
+                    // Open the camera
                     Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(takePicture, 0);
-                } else if (optionsMenu[i].equals("Choose from Gallery")) {
-                    // choose from  external storage
+                } else if (optionsMenu[i].equals("Choose from Gallery")) { // When the user chooses to use an existing photo from their device
+                    // Open the device gallery
                     Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(pickPhoto, 1);
-                } else if (optionsMenu[i].equals("Exit")) {
+                } else if (optionsMenu[i].equals("Cancel")) { // When the user chooses to cancel the selection
                     dialogInterface.dismiss();
                 }
             }
         });
-        builder.show();
+        builder.show(); // Display the alert dialogue containing the menu options
     }
 
+    // Called when the we request a permission from the user
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 101) {
-            if (ContextCompat.checkSelfPermission(activity,
-                    Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getContext(),
-                        "FlagUp Requires Access to Camara.", Toast.LENGTH_SHORT)
-                        .show();
-
-            } else if (ContextCompat.checkSelfPermission(activity,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(getContext(),
-                        "FlagUp Requires Access to Your Storage.",
-                        Toast.LENGTH_SHORT).show();
-
+        if (requestCode == 101) { // 101 is our code for selecting several image permissions
+            // If we have not been granted access to the users camera
+            if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                // Make and display a toast saying that we need access to the camera
+                Toast.makeText(getContext(), "Whiteboard Requires Access to Camara.", Toast.LENGTH_SHORT).show();
+            }
+            // If we have not been granted access to write to the external storage (for saving taken images)
+            else if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                // Make and display a toast saying that we need access to write to the external storage
+                Toast.makeText(getContext(), "Whiteboard Requires Access to Your Storage.", Toast.LENGTH_SHORT).show();
             } else {
+                // If we have not been denied any of the required permissions, we can instead continue to select an image
                 selectImage(activity);
             }
         }
     }
 
-
+    // Called when we get the result of an activity (but obviously only those activities that give results, ie. image selection)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != RESULT_CANCELED) {
+        if (resultCode != RESULT_CANCELED) { // If the result wasn't a cancelled operation
             switch (requestCode) {
+                // If the request code was 0 (got the photo from the camera)
                 case 0:
+                    // If the result is success and there was some data returned
                     if (resultCode == RESULT_OK && data != null) {
                         Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
                         studentImage.setImageBitmap(selectedImage);
                     }
                     break;
+                // If the request code was 1 (got the photo from the gallery)
                 case 1:
+                    // If the result is success and there was some data returned
                     if (resultCode == RESULT_OK && data != null) {
                         Uri selectedImage = data.getData();
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
@@ -280,6 +283,8 @@ public class RecordEditor extends BottomSheetDialogFragment {
                                 String picturePath = cursor.getString(columnIndex);
                                 studentImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
                                 cursor.close();
+
+                                Log.d("Image Path", picturePath);
                             }
                         }
 
