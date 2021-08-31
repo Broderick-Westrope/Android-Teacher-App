@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,60 +17,61 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.todolist.Adapters.ToDoAdapter;
 import com.broderickwestrope.whiteboard.todolist.Models.TaskModel;
-import com.broderickwestrope.whiteboard.todolist.Utils.DatabaseHandler;
+import com.broderickwestrope.whiteboard.todolist.Utils.TaskDBManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// This is our main to-do activity
+// This is our activity containing all of the elements for our to-do list
 public class TodoActivity extends AppCompatActivity implements DialogCloseListener {
 
-    private ToDoAdapter tasksAdapter;
-    private List<TaskModel> taskList;
-    private DatabaseHandler db;
-
-    public View deleteAllView;
+    public View deleteAllView; // The button allowing us to delete all the tasks
+    private ToDoAdapter tasksAdapter; // The wrapper/adapter between the database and the recycler view
+    private List<TaskModel> taskList; // A list of all of our tasks
+    private TaskDBManager db; // Our database manager for the tasks (using SQLite)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo);
 
-        // Set up the support action bar
+        // Set the support action bar to our custom action bar with the title "Tasks"
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Tasks");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        db = new DatabaseHandler(this);
+        // Create our database manager and open it for use
+        db = new TaskDBManager(this);
         db.openDatabase();
 
-
+        // Get the view of our "delete all" button (the bin symbol)
         deleteAllView = findViewById(R.id.deleteAllAction);
-        // This is the element that contains our list elements
+        // Get the view of our "add task" button (the plus symbol)
+        FloatingActionButton fabAddTask = findViewById(R.id.fabAddTask);
+
+        // Get the recycler view that contains our list of tasks
         RecyclerView tasksRV = findViewById(R.id.tasksRV);
         tasksRV.setLayoutManager(new LinearLayoutManager(this));
-        tasksAdapter = new ToDoAdapter(db, this);
-        tasksRV.setAdapter(tasksAdapter);
+        tasksAdapter = new ToDoAdapter(db, this); // Create a new adapter
+        tasksRV.setAdapter(tasksAdapter); // Attach the adapter to the recycler view
 
-        FloatingActionButton fabAddTask = findViewById(R.id.fabAddTask);
+        // Create a new touch helper (this allows our swiping actions) and attach to the recycler view
         ItemTouchHelper touchHelper = new ItemTouchHelper(new TaskTouchHelper(tasksAdapter));
         touchHelper.attachToRecyclerView(tasksRV);
 
-        taskList = new ArrayList<>();
-        taskList = db.getAllTasks();
-        Collections.reverse(taskList);
-        tasksAdapter.setTasks(taskList);
 
-//        deleteAllView.setEnabled(false);
+        taskList = new ArrayList<>(); // Create our local list of tasks
+        taskList = db.getAllTasks(); // Assign any existing tasks from the database
+        tasksAdapter.setTasks(taskList); // Set the recycler view to contain these tasks (using the adapter)
 
+        // Set the onClick action for when a user wants to add a new task
         fabAddTask.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
+                // Open the task editor for a new task (the editor knows it is new because we pass no bundle)
                 TaskEditor.newInstance().show(getSupportFragmentManager(), TaskEditor.TAG);
             }
         });
@@ -80,52 +79,53 @@ public class TodoActivity extends AppCompatActivity implements DialogCloseListen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu. This adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.tasks_menu, menu);
         return true;
     }
 
-    // Go back home on arrow press
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.deleteAllAction:
-                deleteAll();
+            case R.id.deleteAllAction: // When the delete all button is pressed
+                if (!taskList.isEmpty()) // Only allow the user to delete when there are tasks present
+                    deleteAll(); // Delete all tasks
                 return true;
-            case android.R.id.home:
-                this.finish();
+            case android.R.id.home: // When the back/home button (arrow) is pressed
+                this.finish(); // Finish with the activity and return
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    // Our function to handle when the user wants to delete all the tasks
     private void deleteAll() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(tasksAdapter.getContext()); //has no contents!!!!!!!!!!!!!!!
-        builder.setTitle("Delete All Tasks");
-        builder.setMessage("Are you sure you want to delete all tasks?");
+        AlertDialog.Builder builder = new AlertDialog.Builder(tasksAdapter.getContext());
+        builder.setTitle("Delete All Tasks"); // The title of the alert box
+        builder.setMessage("Are you sure you want to delete all tasks?"); // The content of the alert box
+        // The positive button action
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 tasksAdapter.deleteAll();
             }
         });
 
+        // The positive button action
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             }
         });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        AlertDialog dialog = builder.create(); // Build the alert
+        dialog.show(); // Display the alert
     }
 
+    //Performed every time a dialogue is closed. We use this to refresh when the task editor cancels or saves
     @Override
     public void handleDialogClose(DialogInterface dialog) {
-        taskList = db.getAllTasks();
-        Collections.reverse(taskList);
-        tasksAdapter.setTasks(taskList);
-        tasksAdapter.notifyDataSetChanged();
-        deleteAllView.setEnabled(!taskList.isEmpty());
+        taskList = db.getAllTasks(); // Get all tasks from the database
+        tasksAdapter.setTasks(taskList); // Set the recycler view tasks using the adapter
+        tasksAdapter.notifyDataSetChanged(); // Notify that the data set has changed. This refreshes the recyclerview
     }
 }

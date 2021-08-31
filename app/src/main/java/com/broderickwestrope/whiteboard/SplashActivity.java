@@ -14,7 +14,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState); // Run the super of this function
+        super.onCreate(savedInstanceState); // Run the base function
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO); // Disable dark mode changes
         setContentView(R.layout.activity_splash); // Ensure that the splash screen is setup
         Objects.requireNonNull(getSupportActionBar()).hide(); // Hide the support action bar

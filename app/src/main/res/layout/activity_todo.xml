@@ -8,6 +8,7 @@
     android:background="@color/mirage">
 
 
+    <!--        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -16,7 +17,6 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:menu="@menu/tasks_menu"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:titleTextColor="@color/geyser" />
 
     <!--  The container for our cards. These cards serve the purpose of being our tasks  -->

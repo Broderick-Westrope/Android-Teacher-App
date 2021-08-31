@@ -16,8 +16,10 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/icon_circle" />
+        android:layout_height="125sp"
+        android:scaleX="1.15"
+        android:scaleY="1.15"
+        android:src="@mipmap/logo" />
 
     <TextView
         android:layout_width="wrap_content"

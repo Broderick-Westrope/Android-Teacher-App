@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private DrawerLayout drawer;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.navTodo:
                 Intent intent = new Intent(this, TodoActivity.class);
                 startActivity(intent);
-                // getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new TodoFragment()).commit();
                 break;
             case R.id.navStudentRecords:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new RecordsFragment()).commit();

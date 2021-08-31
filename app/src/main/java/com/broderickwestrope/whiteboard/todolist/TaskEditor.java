@@ -18,26 +18,31 @@ import androidx.core.content.ContextCompat;
 
 import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.todolist.Models.TaskModel;
-import com.broderickwestrope.whiteboard.todolist.Utils.DatabaseHandler;
+import com.broderickwestrope.whiteboard.todolist.Utils.TaskDBManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.Objects;
 
-// This provides the interface at the bottom of the screen to create and edit tasks
+// This provides the interface on the lower-portion of the screen to create and edit the contents of tasks
 public class TaskEditor extends BottomSheetDialogFragment {
 
+    // Store the type of dialogue for easy access outside of the class
     public static final String TAG = "ActionBottomDialog";
 
+    // Assign colors for when the save button is either enabled or disabled (minimising inconsistencies)
     int enabledColor = R.color.mirage2;
     int disabledColor = R.color.geyser;
 
+    // Our database manager for the tasks (using SQLite)
+    private TaskDBManager db;
+
+    // Views within our fragment:
     private TextView changeTitleTxt; // The title either reading "Edit Task" or "New Task"
     private EditText editTaskTxt; // The field for the task name/description input
     private EditText editLocTxt; // The field for the location input
     private Button saveTaskBtn; // The button to save the changes to the task
-    private DatabaseHandler db; // The database handler
 
-    // Get a new instance of this fragment
+    // For creating a new instance of this fragment
     public static TaskEditor newInstance() {
         return new TaskEditor();
     }
@@ -60,7 +65,8 @@ public class TaskEditor extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Get references to the XML elements
+
+        // Collect the references to the views
         changeTitleTxt = requireView().findViewById(R.id.changeTitleTxt);
         editTaskTxt = requireView().findViewById(R.id.newTaskTxt);
         editLocTxt = requireView().findViewById(R.id.newTaskLocTxt);
@@ -69,30 +75,31 @@ public class TaskEditor extends BottomSheetDialogFragment {
         // Used to differentiate between when we are trying to create a new task or update an existing task
         boolean isUpdate = false;
 
-        // This lets us get any data passed to this fragment
+        // The bundle lets us get any data passed to this fragment
         final Bundle bundle = getArguments();
-        if (bundle != null) // If our bundle isnt empty (we were passed task data)
+        if (bundle != null) // If our bundle isn't empty (ie. we were passed data)
         {
             // If we were passed data then that means the user has selected a task from the list to edit
             isUpdate = true; // This means we are updating an existing task
             String task = bundle.getString("task"); // Get the task text
-            String location = bundle.getString("location");
+            String location = bundle.getString("location"); // Get the location text
 
             changeTitleTxt.setText("Edit Task"); // Display that the user is editing an existing task
-            editTaskTxt.setText(task); // Display the task in the input field
-            editLocTxt.setText(location); // Display the location in the input field
+            editTaskTxt.setText(task); // Display the existing task in the input field
+            editLocTxt.setText(location); // Display the existing location in the input field
 
-            assert task != null; // Make sure the task is not null
+            // Make sure the task is not null
+            assert task != null;
             if (task.length() > 0) {
                 // Set the color of the button to red (showing it is enabled)
                 saveTaskBtn.setEnabled(true);
                 saveTaskBtn.setTextColor(ContextCompat.getColor(requireContext(), enabledColor));
             }
-        } else {
+        } else { // Else, if weren't passed any data, then we are creating a new task
             changeTitleTxt.setText("New Task"); // Display that the user is creating a new task
         }
 
-        db = new DatabaseHandler(getActivity()); // Create a new database handler
+        db = new TaskDBManager(getActivity()); // Create a new database handler
         db.openDatabase(); // Open the database for use
 
         // Add a listener for changes in the task's text
@@ -120,22 +127,22 @@ public class TaskEditor extends BottomSheetDialogFragment {
         });
 
         // Listen for clicks on the save button
-        boolean finalIsUpdate = isUpdate; // Copy of our update value so we can use it within the onClick method
+        boolean finalIsUpdate = isUpdate; // Copy of our update value so we can use it safely within the onClick method
         saveTaskBtn.setOnClickListener(v -> {
-            String text = editTaskTxt.getText().toString();
-            String location = editLocTxt.getText().toString();
+            String taskText = editTaskTxt.getText().toString(); // Get the string of the task
+            String location = editLocTxt.getText().toString(); // Get the string of the location
 
             if (finalIsUpdate) { // If we are updating an existing task
-                db.updateTask(bundle.getInt("id"), text, location); // Update the text of the task
+                db.updateTask(bundle.getInt("id"), taskText, location); // Update the text of the task
             } else { // Else, if we are adding a new task
                 TaskModel task = new TaskModel(); // Create a new task
-                task.setTask(text); // Set the text
+                task.setTask(taskText); // Set the task text
                 task.setLocation(location); // Set the location
                 task.setStatus(0); // Set it to incomplete by default
 
                 db.insertTask(task); // Insert the task to the database
             }
-            dismiss(); // Dismisses the panel for editing the task
+            dismiss(); // Dismiss the task editor fragment (this)
         });
     }
 
