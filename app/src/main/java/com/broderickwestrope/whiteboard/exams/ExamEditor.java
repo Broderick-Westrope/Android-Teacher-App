@@ -162,7 +162,7 @@ public class ExamEditor extends BottomSheetDialogFragment {
         });
 
         // Listen for clicks on the text view for the date
-        editExam_Date.setOnClickListener(new View.OnClickListener() { //! COmment
+        editExam_Date.setOnClickListener(new View.OnClickListener() { //! Comment
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
@@ -190,7 +190,7 @@ public class ExamEditor extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                int hour = calendar.get(Calendar.HOUR);
+                int hour = calendar.get(Calendar.HOUR_OF_DAY); //hour of day gets 24 h rather than hour which gets 12 h
                 int minute = calendar.get(Calendar.MINUTE);
 
                 TimePickerDialog dialog = new TimePickerDialog(activity, android.R.style.Theme_Holo_Dialog_MinWidth, timeSetListener, hour, minute, true);

@@ -3,14 +3,18 @@ package com.broderickwestrope.whiteboard.exams.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
@@ -21,7 +25,10 @@ import com.broderickwestrope.whiteboard.exams.ViewExamActivity;
 import com.broderickwestrope.whiteboard.exams.ViewRecordActivity;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 // The wrapper/adapter between the database and the recycler view
@@ -45,14 +52,15 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
     }
 
     // Sets up the contents of a view holder with the data of a specified exam (from the database)
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void onBindViewHolder(ViewHolder holder, int index) {
         db.openDatabase(); // Open the exam database for use
         ExamModel item = examList.get(index); // Get the exam from the list using the specified index
+        String timeTillExam = timeTillExam(item.getDate(), item.getTime(), item.getDuration()); // Get the time till the exam
 
         holder.name.setText(item.getName()); // Set the name to the exam's name
         holder.unit.setText(item.getUnit()); // Set the unit to the exam's unit
-        holder.date.setText(item.getDate()); // Set the date to the exam's date
-        holder.time.setText(item.getTime()); // Set the time to the exam's time
+        holder.timeBetween.setText(timeTillExam); // Set the date to the exam's date
 
         // Select a random color for card background (from the given array) :)
         Random random = new Random();
@@ -62,6 +70,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
 
         // Listen for clicks on the "SEE MORE" button to view the students exams
         holder.card.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 // Takes us to a new activity listing the information for this exam
@@ -71,7 +80,8 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
     }
 
     // Takes us to a new activity listing the information for this exam
-    public void viewExam(ExamModel exam) {
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void viewExam(ExamModel exam) { //!Comment this ASAP
         // Create a new intend and bundle to go to the new activity and pass the data to it
         Intent i = new Intent(activity, ViewExamActivity.class);
         Bundle b = new Bundle();
@@ -83,10 +93,90 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         b.putString("time", exam.getTime()); // Put in the exam time
         b.putString("location", exam.getLocation()); // Put in the exam location
         b.putFloat("duration", exam.getDuration()); // Put in the exam duration
+        b.putString("time between", timeTillExam(exam.getDate(), exam.getTime(), exam.getDuration()));
 
         //Put the bundle of extras in the intent and start the activity
         i.putExtras(b);
         activity.startActivity(i);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String timeTillExam(String _examDate, String _examTime, float duration) {
+        // Combine the exam date and time values in the correct format
+        _examTime = _examDate + " " + _examTime;
+
+        // Get the current date and time
+        Date c = Calendar.getInstance().getTime();
+
+        // Format the current date and time to the correct format (to match the exam date and time)
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        String currentTime = df.format(c);
+        long tillStart = 0, tillEnd = 0;
+
+        try {
+            // Turn the dates from strings to the Date type
+            Date currentDate = df.parse(currentTime);
+            Date examStart = df.parse(_examTime);
+
+            // Get the different between the two times, giving us the time till the exam starts. Negative means that the exam has begun. These times are stored as the amount of milliseconds.
+            tillStart = examStart.getTime() - currentDate.getTime();
+
+            int durationMillis = (int) duration * (60 * 60 * 1000);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(examStart);
+            cal.add(Calendar.MILLISECOND, durationMillis);
+            tillEnd = cal.getTime().getTime() - currentDate.getTime();
+        } catch (Exception exception) {
+            Toast.makeText(activity, "ERROR: Unable to find difference in dates.", Toast.LENGTH_SHORT).show();
+        }
+
+        String timeLeft;
+        // If the difference is positive then we have time left before the exam begins
+        if (tillStart > 0) {
+            if (tillStart / (1000 * 60 * 60 * 24 * 7) > 0) {
+                tillStart /= (1000 * 60 * 60 * 24 * 7);
+                timeLeft = "Starts in " + Long.toString(tillStart) + " Weeks";
+            } else if (tillStart / (1000 * 60 * 60 * 24) > 0) {
+                tillStart /= (1000 * 60 * 60 * 24);
+                timeLeft = "Starts in " + Long.toString(tillStart) + " Days";
+            } else if (tillStart / (1000 * 60 * 60) > 0) {
+                tillStart /= (1000 * 60 * 60);
+                timeLeft = "Starts in " + Long.toString(tillStart) + " Hours";
+            } else if (tillStart / (1000 * 60) > 0) {
+                tillStart /= (1000 * 60);
+                timeLeft = "Starts in " + Long.toString(tillStart) + " Minutes";
+            } else if (tillStart / 1000 > 0) {
+                tillStart /= (1000);
+                timeLeft = "Starts in " + Long.toString(tillStart) + " Seconds";
+            } else {
+                timeLeft = "Starts in " + Long.toString(tillStart) + " Milliseconds";
+            }
+        } else {
+            timeLeft = (tillEnd > 0) ? "Ends in " : "Ended";
+            String suffix = (tillEnd > 0) ? "" : " Ago";
+            tillEnd = Math.abs(tillEnd);
+
+            if (tillEnd / (1000 * 60 * 60 * 24 * 7) > 0) {
+                tillEnd /= (1000 * 60 * 60 * 24 * 7);
+                suffix += Long.toString(tillEnd) + " Weeks";
+            } else if (tillEnd / (1000 * 60 * 60 * 24) > 0) {
+                tillEnd /= (1000 * 60 * 60 * 24);
+                timeLeft += Long.toString(tillEnd) + " Days";
+            } else if (tillEnd / (1000 * 60 * 60) > 0) {
+                tillEnd /= (1000 * 60 * 60);
+                timeLeft += Long.toString(tillEnd) + " Hours";
+            } else if (tillEnd / (1000 * 60) > 0) {
+                tillEnd /= (1000 * 60);
+                timeLeft += Long.toString(tillEnd) + " Minutes";
+            } else if (tillEnd / 1000 > 0) {
+                tillEnd /= (1000);
+                timeLeft += Long.toString(tillEnd) + " Seconds";
+            } else {
+                timeLeft += Long.toString(tillEnd) + " Milliseconds";
+            }
+            timeLeft += suffix;
+        }
+        return timeLeft;
     }
 
     // Returns the number of exams in our list of exams (ie. the length of the to-do list)
@@ -154,15 +244,14 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
 
     // Create a version of the RecyclerView ViewHolder with added views
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name, unit, date, time; // TextViews for remaining components of the student exam
+        TextView name, unit, timeBetween; // TextViews for remaining components of the student exam
         RelativeLayout card; // A "card" that everything is displayed on (this is so we can change the color)
 
         ViewHolder(View view) {
             super(view); // Execute the base function
             name = view.findViewById(R.id.exam_Name); // Set the text view to the one in exam_layout
             unit = view.findViewById(R.id.exam_Unit); // Set the text view to the one in exam_layout
-            date = view.findViewById(R.id.exam_Date); // Set the text view to the one in exam_layout
-            time = view.findViewById(R.id.exam_Time); // Set the text view to the one in exam_layout
+            timeBetween = view.findViewById(R.id.exam_TimeBetween); // Set the text view to the one in exam_layout
             card = view.findViewById(R.id.layoutCard); // Set the relative layout to the one in exam_layout
         }
     }
