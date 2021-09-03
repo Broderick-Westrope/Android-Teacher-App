@@ -267,7 +267,7 @@ public class ExamEditor extends BottomSheetDialogFragment {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, "default");
         builder.setContentTitle("Exam Reminder");
         builder.setContentText(content);
-        builder.setSmallIcon(R.mipmap.logoblack);
+        builder.setSmallIcon(R.mipmap.applogo);
         builder.setAutoCancel(true);
         builder.setChannelId("11100"); //using 11100 as our notification channel ID
         return builder.build();

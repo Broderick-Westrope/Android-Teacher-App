@@ -19,7 +19,7 @@
         android:layout_height="125sp"
         android:scaleX="1.15"
         android:scaleY="1.15"
-        android:src="@mipmap/logo_old" />
+        android:src="@mipmap/applogo" />
 
     <TextView
         android:layout_width="wrap_content"
