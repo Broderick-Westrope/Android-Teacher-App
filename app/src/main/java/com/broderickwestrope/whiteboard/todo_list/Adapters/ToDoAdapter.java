@@ -40,7 +40,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
     // Inflates (ie. sets up) the given task/card view
     @NonNull
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_layout, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_task, parent, false);
         return new ViewHolder(itemView);
     }
 

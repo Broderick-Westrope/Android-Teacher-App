@@ -100,7 +100,7 @@ public class RecordsActivity extends AppCompatActivity implements DialogCloseLis
     private void deleteAll() {
         AlertDialog.Builder builder = new AlertDialog.Builder(recordsAdapter.getContext());
         builder.setTitle("Delete All Records"); // The title of the alert box
-        builder.setMessage("Are you sure you want to delete all records?"); // The content of the alert box
+        builder.setMessage("Are you sure you want to delete all records?\nThis action cannot be undone"); // The content of the alert box
         // The positive button action
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override

@@ -9,11 +9,13 @@ public class ExamModel {
     time - This is the time that the exam is scheduled to take place or be due (eg. 12pm)
     location - This is the location at which the exam is to take place (eg. WSU Parramatta Campus)
     duration - This is the duration for which the exam will run (eg. 2 Hours)
-    id - This is the auto-incremented ID of the exam used to identify it
+    studentID - This is the ID of the student whose exam it is
+    examID - This is the identifier of the exam assigned automatically by the database manager
     */
 
     private String name, unit, date, time, location;
-    private int id, duration;
+    private int studentID, examID;
+    private float duration;
 
     public String getName() {
         return name;
@@ -55,19 +57,27 @@ public class ExamModel {
         this.location = location;
     }
 
-    public int getDuration() {
+    public float getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(float duration) {
         this.duration = duration;
     }
 
-    public int getId() {
-        return id;
+    public int getStudentId() {
+        return studentID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setStudentId(int id) {
+        this.studentID = id;
+    }
+
+    public int getExamID() {
+        return examID;
+    }
+
+    public void setExamID(int examID) {
+        this.examID = examID;
     }
 }

@@ -1,0 +1,140 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/cadet_blue">
+
+    <!--  Row 1  -->
+
+    <TextView
+        android:id="@+id/editExam_Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:text="New Exam"
+        android:textColor="@color/mirage"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <!--  Row 2  -->
+
+    <EditText
+        android:id="@+id/editExam_Name"
+        android:layout_width="225dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editExam_Title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:hint="Name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/mirage2"
+        android:textColorHint="@color/pickled_bluewood" />
+
+    <TextView
+        android:id="@+id/editExam_Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editExam_Title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@+id/editExam_Name"
+        android:background="@color/muave"
+        android:padding="5dp"
+        android:text="Select Date"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/mirage2"
+        android:textColorHint="@color/pickled_bluewood" />
+
+    <!--  Row 3  -->
+
+    <EditText
+        android:id="@+id/editExam_Unit"
+        android:layout_width="225dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editExam_Name"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:hint="Unit"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/mirage2"
+        android:textColorHint="@color/pickled_bluewood" />
+
+    <TextView
+        android:id="@+id/editExam_Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editExam_Date"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@+id/editExam_Name"
+        android:background="@color/yellow_green"
+        android:padding="5dp"
+        android:text="Select Time"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/mirage2"
+        android:textColorHint="@color/pickled_bluewood" />
+
+    <!--  Row 4  -->
+
+    <EditText
+        android:id="@+id/editExam_Location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editExam_Unit"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:hint="Location"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/mirage2"
+        android:textColorHint="@color/pickled_bluewood" />
+
+    <!--  Row 5  -->
+
+    <EditText
+        android:id="@+id/editExam_Duration"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editExam_Location"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:hint="Duration (Hours)"
+        android:inputType="number"
+        android:maxLength="8"
+        android:maxLines="1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/mirage2"
+        android:textColorHint="@color/pickled_bluewood" />
+
+    <Button
+        android:id="@+id/saveExamBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editExam_Location"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toEndOf="@+id/editExam_Duration"
+        android:background="@android:color/transparent"
+        android:text="Save"
+        android:textColor="@color/geyser"
+        android:textSize="16dp" />
+
+    <!--  Row 6  -->
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/saveExamBtn"
+        android:layout_marginTop="15dp"
+        android:background="?android:attr/listDivider" />
+</RelativeLayout>

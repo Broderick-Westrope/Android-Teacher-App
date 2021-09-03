@@ -1,0 +1,60 @@
+<!-- This is how we represent a card (a task) on our main activity -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <!--  This is the content container of our card  -->
+    <RelativeLayout
+        android:id="@+id/layoutCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/muave"
+        android:padding="8dp">
+
+        <!--    Row 1    -->
+
+        <TextView
+            android:id="@+id/record_StudentID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_alignParentStart="true"
+            android:fontFamily="@font/monolisa_regular"
+            android:textColor="@color/mirage"
+            tool:text="20453565" />
+
+        <TextView
+            android:id="@+id/record_Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/record_StudentID"
+            android:fontFamily="@font/monolisa_regular"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/mirage"
+            tool:text="Broderick Westrope" />
+
+        <!--    Row 2    -->
+
+        <TextView
+            android:id="@+id/record_Course"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/record_Name"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="3dp"
+            android:fontFamily="@font/monolisa_regular"
+            android:text="Bachelor of Computer Science"
+            android:textColor="@color/mirage2"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

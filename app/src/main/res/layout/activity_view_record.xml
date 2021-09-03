@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mirage">
+
+
+    <!--        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/mirage"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:menu="@menu/records_menu"
+        app:titleTextColor="@color/geyser" />
+
+    <RelativeLayout
+        android:id="@+id/record_InformationContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="10dp">
+
+        <!--    Row 1 (Student ID)    -->
+
+        <TextView
+            android:id="@+id/record_StudentIDTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Student ID:"
+            android:textColor="@color/geyser" />
+
+        <TextView
+            android:id="@+id/record_StudentID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/record_StudentIDTitle"
+            android:padding="8dp"
+            android:text="20453565"
+            android:textColor="@color/geyser" />
+
+        <!--    Row 2 (Name)    -->
+
+        <TextView
+            android:id="@+id/record_NameTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/record_StudentID"
+            android:padding="8dp"
+            android:text="Name:"
+            android:textColor="@color/geyser" />
+
+        <TextView
+            android:id="@+id/record_Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/record_StudentID"
+            android:layout_toEndOf="@id/record_StudentIDTitle"
+            android:padding="8dp"
+            android:text="Broderick Westrope"
+            android:textColor="@color/geyser" />
+
+        <!--    Row 3 (Gender)    -->
+
+        <TextView
+            android:id="@+id/record_GenderTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/record_Name"
+            android:padding="8dp"
+            android:text="Gender:"
+            android:textColor="@color/geyser" />
+
+        <TextView
+            android:id="@+id/record_Gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/record_Name"
+            android:layout_toEndOf="@id/record_StudentIDTitle"
+            android:padding="8dp"
+            android:text="Male"
+            android:textColor="@color/geyser" />
+
+        <!--    Row 4 (Course)    -->
+
+        <TextView
+            android:id="@+id/record_CourseTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/record_Gender"
+            android:padding="8dp"
+            android:text="Course:"
+            android:textColor="@color/geyser" />
+
+        <TextView
+            android:id="@+id/record_Course"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/record_Gender"
+            android:layout_toEndOf="@id/record_StudentIDTitle"
+            android:padding="8dp"
+            android:text="Bachelor of Computer Science"
+            android:textColor="@color/geyser" />
+
+        <!--    Row 5 (Age)    -->
+
+        <TextView
+            android:id="@+id/record_AgeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/record_Course"
+            android:padding="8dp"
+            android:text="Age:"
+            android:textColor="@color/geyser" />
+
+        <TextView
+            android:id="@+id/record_Age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/record_Course"
+            android:layout_toEndOf="@id/record_StudentIDTitle"
+            android:padding="8dp"
+            android:text="17"
+            android:textColor="@color/geyser" />
+
+        <!--    Row 6 (Address)    -->
+
+        <TextView
+            android:id="@+id/record_AddressTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/record_Age"
+            android:padding="8dp"
+            android:text="Address:"
+            android:textColor="@color/geyser" />
+
+        <TextView
+            android:id="@+id/record_Address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/record_Age"
+            android:layout_toEndOf="@id/record_StudentIDTitle"
+            android:padding="8dp"
+            android:text="43 Atlantic Boulevard, Prestons, NSW"
+            android:textColor="@color/geyser" />
+
+        <!--    Row 6 (Address)    -->
+
+        <TextView
+            android:id="@+id/record_ExamsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/record_Address"
+            android:layout_marginTop="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="Exams:"
+            android:textColor="@color/geyser"
+            android:textSize="28dp" />
+    </RelativeLayout>
+
+
+    <!--  The container for our cards. These cards serve the purpose of being our records  -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/examsRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/record_InformationContainer"
+        android:nestedScrollingEnabled="true"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <!--  The Floating button in the bottom right that lets us add a new record  -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddExam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="@color/yellow_green"
+        app:tint="@color/mirage"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+
+</RelativeLayout>

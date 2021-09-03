@@ -1,5 +1,7 @@
 package com.broderickwestrope.whiteboard.student_records.Models;
 
+import android.util.Log;
+
 // The model of what a task will contain
 public class RecordModel {
     /*
@@ -20,6 +22,7 @@ public class RecordModel {
     }
 
     public void setId(int id) {
+        Log.d("ID Inside", String.valueOf(id));
         this.id = id;
     }
 

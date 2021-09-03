@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/mirage">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/mirage"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:menu="@menu/view_exam_menu"
+        app:titleTextColor="@color/geyser" />
+
+    <!--    Row 1 (Student ID)    -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="10dp">
+
+        <!--    Row 1    -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Name:"
+            android:textColor="@color/geyser"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/exam_Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/exam_DurationTitle"
+            android:padding="10dp"
+            android:text="Assignment 1 (Android App)"
+            android:textColor="@color/geyser"
+            android:textSize="16sp" />
+
+        <!--    Row 2    -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/exam_Name"
+            android:padding="10dp"
+            android:text="Unit:"
+            android:textColor="@color/geyser"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/exam_Unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/exam_Name"
+            android:layout_toEndOf="@id/exam_DurationTitle"
+            android:padding="10dp"
+            android:text="Mobile Applications Development"
+            android:textColor="@color/geyser"
+            android:textSize="16sp" />
+
+        <!--    Row 3    -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/exam_Unit"
+            android:padding="10dp"
+            android:text="Date:"
+            android:textColor="@color/geyser"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/exam_Date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/exam_Unit"
+            android:layout_toEndOf="@id/exam_DurationTitle"
+            android:padding="10dp"
+            android:text="10/9/21"
+            android:textColor="@color/geyser"
+            android:textSize="16sp" />
+
+        <!--    Row 4    -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/exam_Date"
+            android:padding="10dp"
+            android:text="Time:"
+            android:textColor="@color/geyser"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/exam_Time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/exam_Date"
+            android:layout_toEndOf="@id/exam_DurationTitle"
+            android:padding="10dp"
+            android:text="24:00"
+            android:textColor="@color/geyser"
+            android:textSize="16sp" />
+
+        <!--    Row 5    -->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/exam_Time"
+            android:padding="10dp"
+            android:text="Location:"
+            android:textColor="@color/geyser"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/exam_Location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/exam_Time"
+            android:layout_toEndOf="@id/exam_DurationTitle"
+            android:padding="10dp"
+            android:text="N/A"
+            android:textColor="@color/geyser"
+            android:textSize="16sp" />
+
+        <!--    Row 6    -->
+
+        <TextView
+            android:id="@+id/exam_DurationTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/exam_Location"
+            android:padding="10dp"
+            android:text="Duration:"
+            android:textColor="@color/geyser"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/exam_Duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/exam_Location"
+            android:layout_toEndOf="@id/exam_DurationTitle"
+            android:padding="10dp"
+            android:text="N/A"
+            android:textColor="@color/geyser"
+            android:textSize="16sp" />
+    </RelativeLayout>
+</RelativeLayout>

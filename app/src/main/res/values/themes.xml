@@ -23,8 +23,15 @@
         <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
-    <!--  Custom Style for editing tasks in the to-do list  -->
+    <!--  Custom Style for editing Student Records  -->
     <style name="EditRecordStyle" parent="Theme.Design.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <!--  Custom Style for editing exams within student records  -->
+    <style name="EditExamStyle" parent="Theme.Design.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowSoftInputMode">adjustResize</item>

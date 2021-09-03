@@ -1,0 +1,71 @@
+<!-- This is how we represent a card (a task) on our main activity -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <!--  This is the content container of our card  -->
+    <RelativeLayout
+        android:id="@+id/layoutCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/muave"
+        android:padding="8dp">
+
+        <!--    Row 1    -->
+
+        <TextView
+            android:id="@+id/exam_Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/monolisa_regular"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/mirage"
+            tool:text="Assignment 1 (Android App)" />
+
+        <TextView
+            android:id="@+id/exam_Date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/monolisa_regular"
+            android:layout_toEndOf="@id/exam_Name"
+            android:textAlignment="textEnd"
+            android:text="10/9/21"
+            android:textColor="@color/mirage2"
+            android:textSize="12sp" />
+
+        <!--    Row 2    -->
+
+        <TextView
+            android:id="@+id/exam_Unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/exam_Name"
+            android:fontFamily="@font/monolisa_regular"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textColor="@color/mirage"
+            tool:text="Mobile Applications Development" />
+
+        <TextView
+            android:id="@+id/exam_Time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/exam_Name"
+            android:layout_marginTop="3dp"
+            android:layout_toEndOf="@id/exam_Unit"
+            android:fontFamily="@font/monolisa_regular"
+            android:text="12pm"
+            android:textAlignment="textEnd"
+            android:textColor="@color/mirage2"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

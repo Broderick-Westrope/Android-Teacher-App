@@ -101,7 +101,7 @@ public class TodoActivity extends AppCompatActivity implements DialogCloseListen
     private void deleteAll() {
         AlertDialog.Builder builder = new AlertDialog.Builder(tasksAdapter.getContext());
         builder.setTitle("Delete All Tasks"); // The title of the alert box
-        builder.setMessage("Are you sure you want to delete all tasks?"); // The content of the alert box
+        builder.setMessage("Are you sure you want to delete all tasks?\nThis action cannot be undone"); // The content of the alert box
         // The positive button action
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override

@@ -1,12 +1,12 @@
 package com.broderickwestrope.whiteboard.student_records.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
+import com.broderickwestrope.whiteboard.exams.ViewRecordActivity;
 import com.broderickwestrope.whiteboard.student_records.Models.RecordModel;
 import com.broderickwestrope.whiteboard.student_records.RecordEditor;
 import com.broderickwestrope.whiteboard.student_records.RecordsActivity;
@@ -39,7 +40,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
     // Inflates (ie. sets up) the given record/card view
     @NonNull
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.record_layout, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_record, parent, false);
         return new ViewHolder(itemView);
     }
 
@@ -50,10 +51,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
 
         holder.studentID.setText(String.valueOf(item.getId())); // Set the Student ID to the record's ID
         holder.name.setText(item.getName()); // Set the name to the student's name
-        holder.gender.setText(item.getGender()); // Set the gender to the student's gender
         holder.course.setText(item.getCourse()); // Set the course to the student's course
-        holder.age.setText(String.valueOf(item.getAge())); // Set the age to the student's age
-        holder.address.setText(item.getAddress()); // Set the address to the student's address
 
         // Select a random color for card background (from the given array) :)
         Random random = new Random();
@@ -61,16 +59,34 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         String randomColorName = colorArray[random.nextInt(colorArray.length)];
         holder.card.setBackgroundColor(Color.parseColor(randomColorName));
 
-        // Listen for clicks on the "EXAMS" button to view the students exams
-        holder.viewExamsBtn.setOnClickListener(new View.OnClickListener() {
+        // Listen for clicks on the student record to see more about the
+        // record including the students information and their exams
+        holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Remove this debugging snackbar
-                Snackbar.make(getContext(), activity.findViewById(R.id.content), "CLICKED ID:" + String.valueOf(item.getId()) + " NAME: " + item.getName(), Snackbar.LENGTH_SHORT).show();
-
-
+                // Used to change activity to view all information about the selected record
+                viewRecord(item);
             }
         });
+    }
+
+    // Changes activity to see more about the record including the students information and their exams
+    public void viewRecord(RecordModel record) {
+        // Create a new intend and bundle to go to the new activity and pass the data to it
+        Intent i = new Intent(activity, ViewRecordActivity.class);
+        Bundle b = new Bundle();
+
+        // Put all the information in the bundle for the next activity
+        b.putInt("id", record.getId()); // Put in the student ID
+        b.putString("name", record.getName()); // Put in the name
+        b.putString("gender", record.getGender()); // Put in the gender
+        b.putString("course", record.getCourse()); // Put in the course
+        b.putInt("age", record.getAge()); // Put in the age
+        b.putString("address", record.getAddress()); // Put in the address
+
+        //Put the bundle of extras in the intent and start the activity
+        i.putExtras(b);
+        activity.startActivity(i);
     }
 
     // Returns the number of records in our list of records (ie. the length of the to-do list)
@@ -137,20 +153,15 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
 
     // Create a version of the RecyclerView ViewHolder with added views
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView studentID, name, gender, course, age, address; // TextViews for remaining components of the student record
+        TextView studentID, name, course; // TextViews for remaining components of the student record
         RelativeLayout card; // A "card" that everything is displayed on (this is so we can change the color)
-        Button viewExamsBtn; // The button to view exams for the corresponding student
 
         ViewHolder(View view) {
             super(view); // Execute the base function
-            gender = view.findViewById(R.id.record_Gender); // Set the spinner to the one in record_layout
             studentID = view.findViewById(R.id.record_StudentID); // Set the text view to the one in record_layout
             name = view.findViewById(R.id.record_Name); // Set the text view to the one in record_layout
             course = view.findViewById(R.id.record_Course); // Set the text view to the one in record_layout
-            age = view.findViewById(R.id.record_Age); // Set the text view to the one in record_layout
-            address = view.findViewById(R.id.record_Address); // Set the text view to the one in record_layout
             card = view.findViewById(R.id.layoutCard); // Set the relative layout to the one in record_layout
-            viewExamsBtn = view.findViewById(R.id.viewExamsBtn); // Set the button to the on in record_layout
         }
     }
 }
