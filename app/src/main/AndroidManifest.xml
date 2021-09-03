@@ -12,9 +12,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/logo"
+        android:icon="@mipmap/logowhite"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/logo"
+        android:roundIcon="@mipmap/logowhite"
         android:supportsRtl="true"
         android:theme="@style/Theme.Whiteboard">
         <activity
@@ -43,6 +43,8 @@
             android:exported="true"
             android:theme="@style/Theme.Whiteboard.BranchNoActionBar" />
 
+
+        <receiver android:name=".exams.ExamReminder"/>
 
         <meta-data
             android:name="preloaded_fonts"

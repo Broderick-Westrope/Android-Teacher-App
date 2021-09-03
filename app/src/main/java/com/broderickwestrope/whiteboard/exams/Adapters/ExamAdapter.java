@@ -167,7 +167,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
 
             if (tillEnd / (1000 * 60 * 60 * 24 * 7) > 0) {
                 tillEnd /= (1000 * 60 * 60 * 24 * 7);
-                suffix += Long.toString(tillEnd) + " Week";
+                timeLeft += Long.toString(tillEnd) + " Week";
             } else if (tillEnd / (1000 * 60 * 60 * 24) > 0) {
                 tillEnd /= (1000 * 60 * 60 * 24);
                 timeLeft += Long.toString(tillEnd) + " Day";

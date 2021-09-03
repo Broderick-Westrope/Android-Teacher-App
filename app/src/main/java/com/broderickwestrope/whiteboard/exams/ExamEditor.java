@@ -1,11 +1,18 @@
 package com.broderickwestrope.whiteboard.exams;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +23,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.broderickwestrope.whiteboard.R;
@@ -26,6 +36,8 @@ import com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 // This provides the interface on the lower-portion of the screen to create and edit the contents of exams
@@ -81,6 +93,7 @@ public class ExamEditor extends BottomSheetDialogFragment {
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -159,6 +172,11 @@ public class ExamEditor extends BottomSheetDialogFragment {
                 db.insertExam(exam); // Insert the exam to the database
             }
             dismiss(); // Dismiss the exam editor fragment (this)
+
+            // !Comment
+            long delay = 10000;
+            scheduleNotification(getNotification("Don't forget that \"" + name + "\" for " + unit + " is coming up soon. " +
+                    "It is due at " + time + " on " + date + "."), date, time);
         });
 
         // Listen for clicks on the text view for the date
@@ -206,6 +224,53 @@ public class ExamEditor extends BottomSheetDialogFragment {
                 editExam_Time.setText(time);
             }
         };
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void scheduleNotification(Notification notification, String date, String time) {
+        // Combine the exam date and time values in the correct format
+        time = date + " " + time;
+
+        // Get the current date and time
+        Date c = Calendar.getInstance().getTime();
+
+        // Format the current date and time to the correct format (to match the exam date and time)
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        String currentTime = df.format(c);
+        long delay = 0;
+
+        try {
+            // Turn the dates from strings to the Date type
+            Date currentDate = df.parse(currentTime);
+            Date examStart = df.parse(time);
+
+            // Get the different between the two times, giving us the time till the exam starts. Negative means that the exam has begun. These times are stored as the amount of milliseconds.
+            delay = examStart.getTime() - currentDate.getTime();
+        } catch (Exception exception) {
+            Toast.makeText(activity, "ERROR: Unable to find difference in dates.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (delay <= 0)
+            return;
+
+        Intent notificationIntent = new Intent(activity, ExamReminder.class);
+        notificationIntent.putExtra(ExamReminder.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(ExamReminder.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+        assert alarmManager != null;
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, delay, pendingIntent);
+    }
+
+    private Notification getNotification(String content) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, "default");
+        builder.setContentTitle("Exam Reminder");
+        builder.setContentText(content);
+        builder.setSmallIcon(R.mipmap.logoblack);
+        builder.setAutoCancel(true);
+        builder.setChannelId("11100"); //using 11100 as our notification channel ID
+        return builder.build();
     }
 
     public boolean canSaveExam(TextView name, TextView unit, TextView date, TextView time, TextView location, TextView duration) {

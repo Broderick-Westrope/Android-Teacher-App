@@ -81,7 +81,7 @@ public class ExamDBManager extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
             // By setting all the values to null we select the entire database with no extra criteria (other than ordering them by ID)
-            cursor = db.query(EXAMS_TABLE, null, STUDENT_ID + "=" + studentID, null, null, null, EXAM_ID + " DESC");
+            cursor = db.query(EXAMS_TABLE, null, STUDENT_ID + "=" + studentID, null, null, null, DATE + " ASC");
             if (cursor != null) // If the cursor is not empty then it means we successfully selected some data
             {
                 if (cursor.moveToFirst()) // Move the cursor to the first row (from the last row). False if the cursor is empty
