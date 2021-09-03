@@ -2,7 +2,6 @@ package com.broderickwestrope.whiteboard.exams.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
@@ -29,7 +29,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 // The wrapper/adapter between the database and the recycler view
 public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
@@ -37,6 +36,10 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
     private final ViewRecordActivity activity; // The activity that is using this adapter to display the exams
     private final ExamDBManager db;  // Our database manager for the exams (using SQLite)
     private List<ExamModel> examList; // A list of all of our exams
+
+    private int card_futureColor = R.color.yellow_green;
+    private int card_runningColor = R.color.turquoise_blue;
+    private int card_pastColor = R.color.texas_rose;
 
     // Class constructor
     public ExamAdapter(ExamDBManager db, ViewRecordActivity activity) {
@@ -62,11 +65,13 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         holder.unit.setText(item.getUnit()); // Set the unit to the exam's unit
         holder.timeBetween.setText(timeTillExam); // Set the date to the exam's date
 
-        // Select a random color for card background (from the given array) :)
-        Random random = new Random();
-        String[] colorArray = getContext().getResources().getStringArray(R.array.card_colors);
-        String randomColorName = colorArray[random.nextInt(colorArray.length)];
-        holder.card.setBackgroundColor(Color.parseColor(randomColorName));
+        // We want to give each 'card' (each exam) a specific background based on the status of the exam
+        if (timeTillExam.startsWith("Starts")) // If the exam is yet to start we use green
+            holder.card.setBackgroundColor(ContextCompat.getColor(activity, card_futureColor));
+        else if (timeTillExam.startsWith("Ends")) // If the exam is in progress we use blue
+            holder.card.setBackgroundColor(ContextCompat.getColor(activity, card_runningColor));
+        else // If the exam is over we use yellow/orange
+            holder.card.setBackgroundColor(ContextCompat.getColor(activity, card_pastColor));
 
         // Listen for clicks on the "SEE MORE" button to view the students exams
         holder.card.setOnClickListener(new View.OnClickListener() {
@@ -135,45 +140,52 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         if (tillStart > 0) {
             if (tillStart / (1000 * 60 * 60 * 24 * 7) > 0) {
                 tillStart /= (1000 * 60 * 60 * 24 * 7);
-                timeLeft = "Starts in " + Long.toString(tillStart) + " Weeks";
+                timeLeft = "Starts in " + Long.toString(tillStart) + " Week";
             } else if (tillStart / (1000 * 60 * 60 * 24) > 0) {
                 tillStart /= (1000 * 60 * 60 * 24);
-                timeLeft = "Starts in " + Long.toString(tillStart) + " Days";
+                timeLeft = "Starts in " + Long.toString(tillStart) + " Day";
             } else if (tillStart / (1000 * 60 * 60) > 0) {
                 tillStart /= (1000 * 60 * 60);
-                timeLeft = "Starts in " + Long.toString(tillStart) + " Hours";
+                timeLeft = "Starts in " + Long.toString(tillStart) + " Hour";
             } else if (tillStart / (1000 * 60) > 0) {
                 tillStart /= (1000 * 60);
-                timeLeft = "Starts in " + Long.toString(tillStart) + " Minutes";
+                timeLeft = "Starts in " + Long.toString(tillStart) + " Minute";
             } else if (tillStart / 1000 > 0) {
                 tillStart /= (1000);
-                timeLeft = "Starts in " + Long.toString(tillStart) + " Seconds";
+                timeLeft = "Starts in " + Long.toString(tillStart) + " Second";
             } else {
-                timeLeft = "Starts in " + Long.toString(tillStart) + " Milliseconds";
+                timeLeft = "Starts in " + Long.toString(tillStart) + " Millisecond";
             }
+
+            if (tillStart > 1)
+                timeLeft += "s";
+
         } else {
-            timeLeft = (tillEnd > 0) ? "Ends in " : "Ended";
+            timeLeft = (tillEnd > 0) ? "Ends in " : "Ended ";
             String suffix = (tillEnd > 0) ? "" : " Ago";
             tillEnd = Math.abs(tillEnd);
 
             if (tillEnd / (1000 * 60 * 60 * 24 * 7) > 0) {
                 tillEnd /= (1000 * 60 * 60 * 24 * 7);
-                suffix += Long.toString(tillEnd) + " Weeks";
+                suffix += Long.toString(tillEnd) + " Week";
             } else if (tillEnd / (1000 * 60 * 60 * 24) > 0) {
                 tillEnd /= (1000 * 60 * 60 * 24);
-                timeLeft += Long.toString(tillEnd) + " Days";
+                timeLeft += Long.toString(tillEnd) + " Day";
             } else if (tillEnd / (1000 * 60 * 60) > 0) {
                 tillEnd /= (1000 * 60 * 60);
-                timeLeft += Long.toString(tillEnd) + " Hours";
+                timeLeft += Long.toString(tillEnd) + " Hour";
             } else if (tillEnd / (1000 * 60) > 0) {
                 tillEnd /= (1000 * 60);
-                timeLeft += Long.toString(tillEnd) + " Minutes";
+                timeLeft += Long.toString(tillEnd) + " Minute";
             } else if (tillEnd / 1000 > 0) {
                 tillEnd /= (1000);
-                timeLeft += Long.toString(tillEnd) + " Seconds";
+                timeLeft += Long.toString(tillEnd) + " Second";
             } else {
-                timeLeft += Long.toString(tillEnd) + " Milliseconds";
+                timeLeft += Long.toString(tillEnd) + " Millisecond";
             }
+
+            if (tillEnd > 1)
+                timeLeft += "s";
             timeLeft += suffix;
         }
         return timeLeft;

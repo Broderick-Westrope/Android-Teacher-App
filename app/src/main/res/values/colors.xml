@@ -17,10 +17,8 @@
 
 
     <string-array name="card_colors">
-<!--        <item>#ef6b73</item>-->
         <item>#c3a6ff</item>
         <item>#ffd580</item>
-<!--        <item>#bae67e</item>-->
         <item>#5ccfe6</item>
         <item>#ffae57</item>
     </string-array>
