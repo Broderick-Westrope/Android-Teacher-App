@@ -17,12 +17,21 @@
         app:menu="@menu/view_exam_menu"
         app:titleTextColor="@color/geyser" />
 
-    <!--    Row 1 (Student ID)    -->
+    <TextView
+        android:id="@+id/exam_TimeBetween"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:text="Ended 1 Hour Ago"
+        android:textColor="@color/grandis"
+        android:textSize="16sp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/exam_TimeBetween"
         android:layout_marginTop="10dp">
 
         <!--    Row 1    -->

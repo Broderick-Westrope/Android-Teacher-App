@@ -14,6 +14,7 @@ import com.broderickwestrope.whiteboard.exams.Models.ExamModel;
 
 public class ViewExamActivity extends AppCompatActivity {
 
+    String timeBetween; //Stores the time between now and the exams start or end (whichever is closer)
     private ExamModel exam; //This is the exam that was selected
 
     @Override
@@ -43,6 +44,8 @@ public class ViewExamActivity extends AppCompatActivity {
         exam.setTime(b.getString("time")); // Set the time of the exam
         exam.setLocation(b.getString("name")); // Set the exams location
         exam.setDuration(b.getFloat("duration")); // Set the exams duration
+        timeBetween = b.getString("time between"); // Get the time between
+
 
         // Set the corresponding text views to the data we were passed in the bundle
         ((TextView) findViewById(R.id.exam_Name)).setText(exam.getName()); // Display the name
@@ -51,6 +54,7 @@ public class ViewExamActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.exam_Time)).setText(exam.getTime()); // Display the name
         ((TextView) findViewById(R.id.exam_Location)).setText(exam.getLocation()); // Display the name
         ((TextView) findViewById(R.id.exam_Duration)).setText(String.valueOf(exam.getDuration())); // Display the name
+        ((TextView) findViewById(R.id.exam_TimeBetween)).setText(timeBetween); // Display the time between
     }
 
     @Override
