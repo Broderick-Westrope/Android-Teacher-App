@@ -86,7 +86,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
 
     // Takes us to a new activity listing the information for this exam
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void viewExam(ExamModel exam) { //!Comment this ASAP
+    public void viewExam(ExamModel exam) {
         // Create a new intend and bundle to go to the new activity and pass the data to it
         Intent i = new Intent(activity, ViewExamActivity.class);
         Bundle b = new Bundle();

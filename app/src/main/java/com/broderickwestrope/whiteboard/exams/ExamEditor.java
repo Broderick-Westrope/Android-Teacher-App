@@ -3,7 +3,6 @@ package com.broderickwestrope.whiteboard.exams;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -11,7 +10,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,21 +21,20 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.broderickwestrope.whiteboard.R;
+import com.broderickwestrope.whiteboard.exams.Listeners.DialogCloseListener;
+import com.broderickwestrope.whiteboard.exams.Listeners.ExamReminderReceiver;
 import com.broderickwestrope.whiteboard.exams.Models.ExamModel;
 import com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Objects;
 
 // This provides the interface on the lower-portion of the screen to create and edit the contents of exams
@@ -51,6 +48,7 @@ public class ExamEditor extends BottomSheetDialogFragment {
     int disabledColor = R.color.geyser;
 
     int studentID;
+    ExamReminderManager examReminder;//TODO comment
 
     // Our database manager for the exams (using SQLite)
     private ExamDBManager db;
@@ -68,14 +66,15 @@ public class ExamEditor extends BottomSheetDialogFragment {
     private EditText editExam_Duration; // The field for the exam duration input
     private Button saveExamBtn; // The button to save the changes to the exam
 
-    //TODO COmment this better. Its stuff for our date picker dialog
-    private DatePickerDialog.OnDateSetListener dateSetListener;
-    private TimePickerDialog.OnTimeSetListener timeSetListener;
+    // These are event listeners for changing the date and time using the date and time picker dialogs
+    private DatePickerDialog.OnDateSetListener dateSetListener; // Listens for the exam date being set
+    private TimePickerDialog.OnTimeSetListener timeSetListener; // Listens for the exam time being set
 
     // Class constructor
     public ExamEditor(ViewRecordActivity activity, int studentID) {
         this.activity = activity;
         this.studentID = studentID;
+        this.examReminder = new ExamReminderManager(activity); //TODO Comment this function
     }
 
     // Add our custom style to the on create method
@@ -159,8 +158,8 @@ public class ExamEditor extends BottomSheetDialogFragment {
             if (finalIsUpdate) { // If we are updating an existing exam and the student ID hasnt been changed
                 db.updateExam(bundle.getInt("id"), name, unit, date, time, location, duration); // Update the elements of the exam
             } else { // Else, if we are adding a new exam
-                ExamModel exam = new ExamModel(); // Create a new exam
                 // Set the values of the new exam
+                ExamModel exam = new ExamModel(); // Create a new exam
                 exam.setStudentId(studentID);
                 exam.setName(name);
                 exam.setUnit(unit);
@@ -171,106 +170,85 @@ public class ExamEditor extends BottomSheetDialogFragment {
 
                 db.insertExam(exam); // Insert the exam to the database
             }
-            dismiss(); // Dismiss the exam editor fragment (this)
 
-            // !Comment
-            long delay = 10000;
-            scheduleNotification(getNotification("Don't forget that \"" + name + "\" for " + unit + " is coming up soon. " +
-                    "It is due at " + time + " on " + date + "."), date, time);
+//            examReminder.examNotificaton(name, unit, date, time, bundle.getInt("id"));
+
+            dismiss(); // Dismiss the exam editor fragment (this class)
         });
 
-        // Listen for clicks on the text view for the date
-        editExam_Date.setOnClickListener(new View.OnClickListener() { //! Comment
+        // Listen for clicks on the text view for changing the date
+        editExam_Date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Create a new calendar and get the current date from it
                 Calendar calendar = Calendar.getInstance();
                 int year = calendar.get(Calendar.YEAR);
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
 
+                // Create and show a new date picker dialog (the popup for picking a date) and tell it what the current date is
                 DatePickerDialog dialog = new DatePickerDialog(activity, android.R.style.Theme_Holo_Dialog_MinWidth, dateSetListener, year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
         });
 
-        dateSetListener = new DatePickerDialog.OnDateSetListener() { //! Comment
+        // This is the listener that is called when the user chooses a date for the exam using the date picker dialog
+        dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month += 1;
-                String date = dayOfMonth + "/" + month + "/" + year;
-                editExam_Date.setText(date);
+                month += 1; // We need to increment the month by one because months are indexed from 0
+                String date = dayOfMonth + "/" + month + "/" + year; // Format the date in a string
+                editExam_Date.setText(date); // Set the text view to display the chosen date
             }
         };
 
-        // Listen for clicks on the text view for the time
-        editExam_Time.setOnClickListener(new View.OnClickListener() { // ! Comment
+        // Listen for clicks on the text view for changing the time
+        editExam_Time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Create a new calendar and get the current time from it
                 Calendar calendar = Calendar.getInstance();
-                int hour = calendar.get(Calendar.HOUR_OF_DAY); //hour of day gets 24 h rather than hour which gets 12 h
+                int hour = calendar.get(Calendar.HOUR_OF_DAY); //Here we use "HOUR_OF_DAY" rather than "HOUR" because it gives us 24 hour time (the format we want)
                 int minute = calendar.get(Calendar.MINUTE);
 
+                // Create and show a new time picker dialog (the popup for picking a time) and tell it what the current time is
                 TimePickerDialog dialog = new TimePickerDialog(activity, android.R.style.Theme_Holo_Dialog_MinWidth, timeSetListener, hour, minute, true);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
             }
         });
 
-        timeSetListener = new TimePickerDialog.OnTimeSetListener() { // ! Comment
+        // This is the listener that is called when the user chooses a date for the exam using the date picker dialog
+        timeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                String time = String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute);
-                editExam_Time.setText(time);
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) { //TODO Comment this
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                c.set(Calendar.MINUTE, minute);
+                c.set(Calendar.SECOND, 0);
+                updateTimeText(c);
+                c.add(Calendar.MILLISECOND, -0); //TODO THis is where we want to change the delay based on the users settings
+                startReminder(c);
             }
         };
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void scheduleNotification(Notification notification, String date, String time) {
-        // Combine the exam date and time values in the correct format
-        time = date + " " + time;
-
-        // Get the current date and time
-        Date c = Calendar.getInstance().getTime();
-
-        // Format the current date and time to the correct format (to match the exam date and time)
-        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-        String currentTime = df.format(c);
-        long delay = 0;
-
-        try {
-            // Turn the dates from strings to the Date type
-            Date currentDate = df.parse(currentTime);
-            Date examStart = df.parse(time);
-
-            // Get the different between the two times, giving us the time till the exam starts. Negative means that the exam has begun. These times are stored as the amount of milliseconds.
-            delay = examStart.getTime() - currentDate.getTime();
-        } catch (Exception exception) {
-            Toast.makeText(activity, "ERROR: Unable to find difference in dates.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (delay <= 0)
-            return;
-
-        Intent notificationIntent = new Intent(activity, ExamReminder.class);
-        notificationIntent.putExtra(ExamReminder.NOTIFICATION_ID, 1);
-        notificationIntent.putExtra(ExamReminder.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
-        assert alarmManager != null;
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, delay, pendingIntent);
+    private void updateTimeText(Calendar c) { //TODO comment this
+        String time = DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
+        editExam_Time.setText(time);
     }
 
-    private Notification getNotification(String content) {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, "default");
-        builder.setContentTitle("Exam Reminder");
-        builder.setContentText(content);
-        builder.setSmallIcon(R.mipmap.applogo);
-        builder.setAutoCancel(true);
-        builder.setChannelId("11100"); //using 11100 as our notification channel ID
-        return builder.build();
+    private void startReminder(Calendar c) { //TODO comment this
+        AlarmManager alarmManager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(activity, ExamReminderReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(activity, 1, intent, 0);
+
+        if (c.before(Calendar.getInstance())) {
+            c.add(Calendar.DATE, 1);
+        }
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
     }
 
     public boolean canSaveExam(TextView name, TextView unit, TextView date, TextView time, TextView location, TextView duration) {

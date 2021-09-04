@@ -44,7 +44,7 @@
             android:theme="@style/Theme.Whiteboard.BranchNoActionBar" />
 
 
-        <receiver android:name=".exams.ExamReminder"/>
+        <receiver android:name=".exams.Listeners.ExamReminderReceiver"/>
 
         <meta-data
             android:name="preloaded_fonts"
