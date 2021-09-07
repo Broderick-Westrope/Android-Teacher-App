@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.broderickwestrope.whiteboard">
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:required="true" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28"
+        android:required="true"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
@@ -42,9 +49,12 @@
             android:name=".exams.ViewExamActivity"
             android:exported="true"
             android:theme="@style/Theme.Whiteboard.BranchNoActionBar" />
+        <activity
+            android:name=".gallery.GalleryActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Whiteboard.BranchNoActionBar" />
 
-
-        <receiver android:name=".exams.Listeners.ExamReminderReceiver"/>
+        <receiver android:name=".exams.Listeners.ExamReminderReceiver" />
 
         <meta-data
             android:name="preloaded_fonts"

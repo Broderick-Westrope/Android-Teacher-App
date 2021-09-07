@@ -40,7 +40,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
     // Inflates (ie. sets up) the given record/card view
     @NonNull
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_record, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_record, parent, false);
         return new ViewHolder(itemView);
     }
 

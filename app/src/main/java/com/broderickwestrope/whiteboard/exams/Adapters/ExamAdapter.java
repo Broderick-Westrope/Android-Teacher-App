@@ -50,7 +50,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
     // Inflates (ie. sets up) the given exam/card view
     @NonNull
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_exam, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_exam, parent, false);
         return new ViewHolder(itemView);
     }
 

@@ -155,27 +155,14 @@ public class ExamEditor extends BottomSheetDialogFragment {
         });
 
         // This is the listener that is called when the user chooses a date for the exam using the date picker dialog
-        dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                setDate(year, month, dayOfMonth);
-            }
-        };
+        dateSetListener = (view12, year, month, dayOfMonth) -> setDate(year, month, dayOfMonth);
 
         // Listen for clicks on the text view for changing the time
-        editExam_Time.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onTimeClicked();
-            }
-        });
+        editExam_Time.setOnClickListener(v -> onTimeClicked());
 
         // This is the listener that is called when the user chooses a date for the exam using the date picker dialog
-        timeSetListener = new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) { //TODO Comment this
-                setTime(hourOfDay, minute);
-            }
+        timeSetListener = (view1, hourOfDay, minute) -> { //TODO Comment this
+            setTime(hourOfDay, minute);
         };
     }
 
@@ -266,16 +253,12 @@ public class ExamEditor extends BottomSheetDialogFragment {
 
 
         //Update time text view
-//!                String time = DateFormat.getTimeInstance(DateFormat.SHORT).format(c.getTime());
         String time = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(c.getTime());
         editExam_Time.setText(time);
     }
 
     public boolean canSaveExam(TextView name, TextView unit, TextView date, TextView time, TextView location, TextView duration) {
-        if (name.getText().toString().isEmpty() || unit.getText().toString().isEmpty() || /*date.getText().toString().endsWith("Date") || time.getText().toString().endsWith("Time") ||*/ location.getText().toString().isEmpty() || duration.getText().toString().isEmpty())
-            return false;
-        else
-            return true;
+        return !name.getText().toString().isEmpty() && !unit.getText().toString().isEmpty() && !date.getText().toString().endsWith("Date") && !time.getText().toString().endsWith("Time") && !location.getText().toString().isEmpty() && !duration.getText().toString().isEmpty();
     }
 
     // Allows us to refresh/update the recyclerview of our exams each time the panel is dismissed (when the exam is saved)
