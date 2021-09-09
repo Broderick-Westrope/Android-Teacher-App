@@ -67,12 +67,9 @@ public class TodoActivity extends AppCompatActivity implements DialogCloseListen
         tasksAdapter.setTasks(taskList); // Set the recycler view to contain these tasks (using the adapter)
 
         // Set the onClick action for when a user wants to add a new task
-        fabAddTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open the task editor for a new task (the editor knows it is new because we pass no bundle)
-                TaskEditor.newInstance().show(getSupportFragmentManager(), TaskEditor.TAG);
-            }
+        fabAddTask.setOnClickListener(v -> {
+            // Open the task editor for a new task (the editor knows it is new because we pass no bundle)
+            TaskEditor.newInstance().show(getSupportFragmentManager(), TaskEditor.TAG);
         });
     }
 
@@ -110,7 +107,7 @@ public class TodoActivity extends AppCompatActivity implements DialogCloseListen
             }
         });
 
-        // The positive button action
+        // The negative button action
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

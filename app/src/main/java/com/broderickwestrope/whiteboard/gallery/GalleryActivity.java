@@ -1,10 +1,12 @@
 package com.broderickwestrope.whiteboard.gallery;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,26 +21,33 @@ import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.gallery.Adapters.GalleryAdapter;
 import com.google.android.material.snackbar.Snackbar;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class GalleryActivity extends AppCompatActivity {
     public static final int READ_PERMISSION_CODE = 101;
     RecyclerView gallery_ImagesRV;
     GalleryAdapter galleryAdapter;
-    List<String> images;
-    List<String> selectedImages;
+    ArrayList<String> images;
+    ArrayList<String> selectedImages;
     Toolbar toolbar;
     private GalleryAdapter.PhotoListener photoListener = new GalleryAdapter.PhotoListener() {
         @Override
-        public void onPhotoClick(String path) {
+        public void onPhotoClick(String path, GalleryAdapter.ViewHolder holder) {
             // Do something with the photos when clicked
             Snackbar.make(findViewById(R.id.content), "Pressed " + path, Snackbar.LENGTH_SHORT).show();
+            selectedImages.remove(path);
+            holder.checkBox.setVisibility(CheckBox.INVISIBLE);
+//            holder.checkBox.setChecked(false);
         }
 
         @Override
-        public void onPhotoLongClick(String path) {
+        public void onPhotoLongClick(String path, GalleryAdapter.ViewHolder holder) {
             // Do something with the photos when clicked
             Snackbar.make(findViewById(R.id.content), "Held " + path, Snackbar.LENGTH_SHORT).show();
+            if (!selectedImages.contains(path))
+                selectedImages.add(path);
+            holder.checkBox.setVisibility(CheckBox.VISIBLE);
+            holder.checkBox.setChecked(true);
         }
     };
 
@@ -47,7 +56,9 @@ public class GalleryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
 
-        // Set the support action bar to our custom action bar with the title "Records"
+        selectedImages = new ArrayList<>();
+
+        // Set the support action bar to our custom action bar with the title "Photos"
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Photos");
         setSupportActionBar(toolbar);
@@ -72,11 +83,34 @@ public class GalleryActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) { // When the back/home button (arrow) is pressed
-            this.finish(); // Finish with the activity and return
-            return true;
+        switch (item.getItemId()) {
+            case R.id.deleteAllAction: // When the delete all button is pressed
+                if (!selectedImages.isEmpty()) // Only allow the user to delete when there are tasks present
+                    deleteSelection();
+                return true;
+            case android.R.id.home: // When the back/home button (arrow) is pressed
+                this.finish(); // Finish with the activity and return
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteSelection() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(GalleryActivity.this);
+        builder.setTitle("Delete Selected Photos"); // The title of the alert box
+        builder.setMessage("Are you sure you want to delete the " + String.valueOf(selectedImages.size()) + " selected photo/s from your device?\nNOTE: This action cannot be undone."); // The content of the alert box
+        // The positive button action
+        builder.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+            galleryAdapter.deleteSelected(selectedImages, GalleryActivity.this); // Delete all tasks
+            selectedImages.clear();
+            toolbar.setTitle("Photos (" + images.size() + ")");
+        });
+
+        // The negative button action
+        builder.setNegativeButton(android.R.string.no, (dialog, which) -> {
+        });
+        AlertDialog dialog = builder.create(); // Build the alert
+        dialog.show(); // Display the alert
     }
 
     @Override

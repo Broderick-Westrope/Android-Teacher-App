@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/mirage"
     android:padding="1dp">
 
     <ImageView
@@ -12,7 +13,20 @@
         android:layout_height="0dp"
         android:contentDescription="Gallery Image"
         android:scaleType="centerCrop"
+        android:src="@mipmap/applogo"
         app:layout_constraintDimensionRatio="1"
         tools:ignore="MissingConstraints" />
+
+    <CheckBox
+        android:id="@+id/imageCheckBox"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="3dp"
+        android:background="?android:attr/listChoiceIndicatorMultiple"
+        android:backgroundTint="@color/turquoise_blue"
+        android:button="@null"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
