@@ -2,12 +2,14 @@ package com.broderickwestrope.whiteboard.exams;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +25,7 @@ import com.broderickwestrope.whiteboard.exams.Adapters.ExamAdapter;
 import com.broderickwestrope.whiteboard.exams.Listeners.DialogCloseListener;
 import com.broderickwestrope.whiteboard.exams.Models.ExamModel;
 import com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager;
+import com.broderickwestrope.whiteboard.student_records.MapsActivity;
 import com.broderickwestrope.whiteboard.student_records.Models.RecordModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -97,7 +100,8 @@ public class ViewRecordActivity extends AppCompatActivity implements DialogClose
         studentRecord.setGender(b.getString("gender")); // Set the students gender
         studentRecord.setCourse(b.getString("course")); // Set the students course
         studentRecord.setAge(b.getInt("age")); // Set the students age
-        studentRecord.setAddress(b.getString("address")); // Set the students address
+        String address = b.getString("address"); // Store the address cause we also use it later (for showing the map)
+        studentRecord.setAddress(address); // Set the students address
         studentRecord.setImage(b.getByteArray("image")); // Set the students image
 
         // Set the corresponding text views to the data we were passed in the bundle
@@ -108,6 +112,15 @@ public class ViewRecordActivity extends AppCompatActivity implements DialogClose
         ((TextView) findViewById(R.id.record_Age)).setText(String.valueOf(studentRecord.getAge())); // Display their age
         ((TextView) findViewById(R.id.record_Address)).setText(studentRecord.getAddress()); // Display their address
         ((ImageView) findViewById(R.id.record_Image)).setImageBitmap(byteArrayToBitmap(studentRecord.getImage())); // Display their image
+
+        // Set the onclick for seeing the address on the google-maps activity
+        ((Button) findViewById(R.id.record_SeeMapBtn)).setOnClickListener(v -> {
+            Intent i = new Intent(ViewRecordActivity.this, MapsActivity.class);
+            Bundle mapsBundle = new Bundle();
+            mapsBundle.putString("address", address);
+            i.putExtras(mapsBundle);
+            startActivity(i);
+        });
     }
 
     // Converts the byte-array to a bitmap image that we can display

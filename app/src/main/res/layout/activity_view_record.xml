@@ -78,8 +78,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/record_StudentID"
-            android:layout_toEndOf="@id/record_StudentIDTitle"
             android:layout_toStartOf="@id/record_Image"
+            android:layout_toEndOf="@id/record_StudentIDTitle"
             android:padding="8dp"
             android:text="Broderick Westrope"
             android:textColor="@color/geyser" />
@@ -168,7 +168,7 @@
             android:text="43 Atlantic Boulevard, Prestons, NSW"
             android:textColor="@color/geyser" />
 
-        <!--    Row 6 (Address)    -->
+        <!--    Row 7 (Exam Title & Address Button)    -->
 
         <TextView
             android:id="@+id/record_ExamsTitle"
@@ -181,6 +181,17 @@
             android:text="Exams:"
             android:textColor="@color/geyser"
             android:textSize="28dp" />
+
+        <Button
+            android:id="@+id/record_SeeMapBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/record_Address"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/turquoise_blue"
+            android:text="See on map"
+            android:textColor="@color/mirage" />
     </RelativeLayout>
 
 
