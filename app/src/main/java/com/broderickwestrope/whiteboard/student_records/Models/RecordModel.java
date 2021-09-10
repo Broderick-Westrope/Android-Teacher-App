@@ -11,11 +11,20 @@ public class RecordModel {
     gender - This is the students gender. It is either Male, Female, or Other.
     course - This is the name of the course that the student is enrolled in.
     address - This is the students residential address.
+    image - An image of the student stored as a byte-array containing bitmap data
     */
 
     private int id, age;
     private String name, gender, course, address;
+    private byte[] image;
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
 
     public int getId() {
         return id;

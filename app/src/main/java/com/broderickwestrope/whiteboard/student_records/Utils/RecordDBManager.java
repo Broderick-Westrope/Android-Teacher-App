@@ -13,7 +13,7 @@ import java.util.List;
 
 // Our database manager for the student records records. This is used to interface between the SQLite database easily.
 public class RecordDBManager extends SQLiteOpenHelper {
-    private static final int VERSION = 1; // The version of our database
+    private static final int VERSION = 2; // The version of our database
     private static final String DB_NAME = "recordsDB"; // The name we have given our database
     private static final String RECORDS_TABLE = "records"; // The name of our table of records
     private static final String ID = "id"; // The column containing the student ID of the record
@@ -22,8 +22,9 @@ public class RecordDBManager extends SQLiteOpenHelper {
     private static final String COURSE = "course"; // The column containing the course that the student is enrolled in
     private static final String AGE = "age"; // The column containing the age of the student
     private static final String ADDRESS = "address"; // The column containing the residential address of the student
+    private static final String IMAGE = "image"; //The column containing the image of the student
     // The command for creating the SQLite table
-    private static final String CREATE_RECORDS_TABLE = "CREATE TABLE " + RECORDS_TABLE + "(" + ID + " INTEGER, " + NAME + " TEXT, " + GENDER + " TEXT, " + COURSE + " TEXT, " + AGE + " INTEGER, " + ADDRESS + " TEXT" + ")";
+    private static final String CREATE_RECORDS_TABLE = "CREATE TABLE " + RECORDS_TABLE + "(" + ID + " INTEGER, " + NAME + " TEXT, " + GENDER + " TEXT, " + COURSE + " TEXT, " + AGE + " INTEGER, " + ADDRESS + " TEXT, " + IMAGE + " BLOB" + ")";
 
     // Our SQLite database
     private SQLiteDatabase db;
@@ -64,6 +65,7 @@ public class RecordDBManager extends SQLiteOpenHelper {
         cv.put(COURSE, record.getCourse()); // Add the course
         cv.put(AGE, record.getAge()); // Add the age
         cv.put(ADDRESS, record.getAddress()); // Add the address
+        cv.put(IMAGE, record.getImage()); // Add the image
 
         // Use the given insert function to avoid writing raw SQL. This inserts the values into the RECORDS_TABLE, ignoring no columns
         db.insert(RECORDS_TABLE, null, cv);
@@ -91,7 +93,8 @@ public class RecordDBManager extends SQLiteOpenHelper {
                         record.setCourse(cursor.getString(cursor.getColumnIndex(COURSE))); // Get the course
                         record.setAge(cursor.getInt(cursor.getColumnIndex(AGE))); // Get the age
                         record.setAddress(cursor.getString(cursor.getColumnIndex(ADDRESS))); // Get the address
-                        recordList.add(record);
+                        record.setImage(cursor.getBlob(cursor.getColumnIndex(IMAGE))); // Get the image
+                        recordList.add(record); // Add the record to the list of records
                     } while (cursor.moveToNext()); // Repeat for each remaining element
                 }
             }

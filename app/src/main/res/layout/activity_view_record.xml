@@ -45,6 +45,23 @@
             android:text="20453565"
             android:textColor="@color/geyser" />
 
+        <!--   Image     -->
+
+        <ImageView
+            android:id="@+id/record_Image"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:adjustViewBounds="true"
+            android:background="@color/mirage"
+            android:padding="5dp"
+            android:src="@drawable/ic_person"
+            app:layout_collapseMode="parallax"
+            app:layout_collapseParallaxMultiplier="0.7" />
+
         <!--    Row 2 (Name)    -->
 
         <TextView
@@ -62,6 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/record_StudentID"
             android:layout_toEndOf="@id/record_StudentIDTitle"
+            android:layout_toStartOf="@id/record_Image"
             android:padding="8dp"
             android:text="Broderick Westrope"
             android:textColor="@color/geyser" />

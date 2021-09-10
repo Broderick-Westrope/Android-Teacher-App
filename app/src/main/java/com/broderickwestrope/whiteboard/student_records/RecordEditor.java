@@ -16,7 +16,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +36,7 @@ import com.broderickwestrope.whiteboard.student_records.Models.RecordModel;
 import com.broderickwestrope.whiteboard.student_records.Utils.RecordDBManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -54,6 +54,9 @@ public class RecordEditor extends BottomSheetDialogFragment {
     // Our database manager for the records (using SQLite)
     private RecordDBManager db;
 
+    // The Bitmap containing the students image
+    private byte[] studentImage;
+
     // Holds the instance of the activity
     private RecordsActivity activity;
 
@@ -65,7 +68,7 @@ public class RecordEditor extends BottomSheetDialogFragment {
     private EditText editRecord_Course; // The field for the record course input
     private EditText editRecord_Age; // The field for the record age input
     private EditText editRecord_Address; // The field for the record address input
-    private ImageView studentImage; // The image of the student (also acts as a button for selecting a new image)
+    private ImageView editRecord_studentImage; // The image of the student (also acts as a button for selecting a new image)
     private Button saveRecordBtn; // The button to save the changes to the record
 
     // Class constructor
@@ -100,7 +103,7 @@ public class RecordEditor extends BottomSheetDialogFragment {
         editRecord_Course = requireView().findViewById(R.id.editRecord_Course);
         editRecord_Age = requireView().findViewById(R.id.editRecord_Age);
         editRecord_Address = requireView().findViewById(R.id.editRecord_Address);
-        studentImage = requireView().findViewById(R.id.editRecord_Image);
+        editRecord_studentImage = requireView().findViewById(R.id.editRecord_Image);
         saveRecordBtn = requireView().findViewById(R.id.saveRecordBtn);
 
         // Used to differentiate between when we are trying to create a new record or update an existing record
@@ -122,6 +125,7 @@ public class RecordEditor extends BottomSheetDialogFragment {
             String course = bundle.getString("course"); // Get the record text
             int age = bundle.getInt("age"); // Get the record text
             String address = bundle.getString("address"); // Get the record text
+            studentImage = bundle.getByteArray("image");
 
 
             changeTitleTxt.setText("Edit Record"); // Display that the user is editing an existing record
@@ -131,6 +135,7 @@ public class RecordEditor extends BottomSheetDialogFragment {
             editRecord_Course.setText(course); // Display the existing course in the input field
             editRecord_Age.setText(String.valueOf(age)); // Display the existing age in the input field
             editRecord_Address.setText(address); // Display the existing address in the input field
+            editRecord_studentImage.setImageBitmap(byteArrayToBitmap(studentImage));
         } else { // Else, if weren't passed any data, then we are creating a new record
             changeTitleTxt.setText("New Record"); // Display that the user is creating a new record
         }
@@ -152,7 +157,7 @@ public class RecordEditor extends BottomSheetDialogFragment {
             int age = Integer.parseInt(editRecord_Age.getText().toString()); // Get the age
             String address = editRecord_Address.getText().toString(); // Get the address
 
-            if (finalIsUpdate && bundle.getInt("id") == studentID) { // If we are updating an existing record and the student ID hasnt been changed
+            if (finalIsUpdate && bundle.getInt("id") == studentID) { // If we are updating an existing record and the student ID hasn't been changed
                 db.updateRecord(bundle.getInt("id"), name, gender, course, age, address); // Update the elements of the record
             } else { // Else, if we are adding a new record
                 RecordModel record = new RecordModel(); // Create a new record
@@ -163,6 +168,7 @@ public class RecordEditor extends BottomSheetDialogFragment {
                 record.setCourse(course);
                 record.setAge(age);
                 record.setAddress(address);
+                record.setImage(studentImage);
 
                 db.insertRecord(record); // Insert the record to the database
 
@@ -175,7 +181,7 @@ public class RecordEditor extends BottomSheetDialogFragment {
         });
 
         // When the user clicks the image we want to let them pick a new image if we have the permissions
-        studentImage.setOnClickListener(v -> {
+        editRecord_studentImage.setOnClickListener(v -> {
             if (checkImagePermissions(activity)) {
                 selectImage(getContext());
             }
@@ -215,20 +221,17 @@ public class RecordEditor extends BottomSheetDialogFragment {
         // Create an alert dialogue to house these menu options
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         // Put the options in the alter dialogue and set their corresponding actions for onClick
-        builder.setItems(optionsMenu, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (optionsMenu[i].equals("Take Photo")) { //When the user chooses to take a photo with the camera
-                    // Open the camera
-                    Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(takePicture, 0);
-                } else if (optionsMenu[i].equals("Choose from Gallery")) { // When the user chooses to use an existing photo from their device
-                    // Open the device gallery
-                    Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(pickPhoto, 1);
-                } else if (optionsMenu[i].equals("Cancel")) { // When the user chooses to cancel the selection
-                    dialogInterface.dismiss();
-                }
+        builder.setItems(optionsMenu, (dialogInterface, i) -> {
+            if (optionsMenu[i].equals("Take Photo")) { //When the user chooses to take a photo with the camera
+                // Open the camera
+                Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(takePicture, 0);
+            } else if (optionsMenu[i].equals("Choose from Gallery")) { // When the user chooses to use an existing photo from their device
+                // Open the device gallery
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto, 1);
+            } else if (optionsMenu[i].equals("Cancel")) { // When the user chooses to cancel the selection
+                dialogInterface.dismiss();
             }
         });
         builder.show(); // Display the alert dialogue containing the menu options
@@ -264,8 +267,9 @@ public class RecordEditor extends BottomSheetDialogFragment {
                 case 0:
                     // If the result is success and there was some data returned
                     if (resultCode == RESULT_OK && data != null) {
-                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
-                        studentImage.setImageBitmap(selectedImage);
+                        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                        editRecord_studentImage.setImageBitmap(bitmap);
+                        studentImage = bitmapToByteArray(bitmap);
                     }
                     break;
                 // If the request code was 1 (got the photo from the gallery)
@@ -281,10 +285,10 @@ public class RecordEditor extends BottomSheetDialogFragment {
 
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
-                                studentImage.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+                                Bitmap bitmap = BitmapFactory.decodeFile(picturePath);
+                                editRecord_studentImage.setImageBitmap(bitmap);
+                                studentImage = bitmapToByteArray(bitmap);
                                 cursor.close();
-
-                                Log.d("Image Path", picturePath);
                             }
                         }
 
@@ -294,8 +298,17 @@ public class RecordEditor extends BottomSheetDialogFragment {
         }
     }
 
-    public boolean canSaveRecord(TextView id, TextView name, TextView course, TextView
-            age, TextView address) {
+    private Bitmap byteArrayToBitmap(byte[] data) {
+        return BitmapFactory.decodeByteArray(data, 0, data.length);
+    }
+
+    private byte[] bitmapToByteArray(Bitmap data) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        data.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        return outputStream.toByteArray();
+    }
+
+    public boolean canSaveRecord(TextView id, TextView name, TextView course, TextView age, TextView address) {
         if (id.getText().toString().isEmpty() || name.getText().toString().isEmpty() || course.getText().toString().isEmpty() || age.getText().toString().isEmpty() || address.getText().toString().isEmpty())
             return false;
         else

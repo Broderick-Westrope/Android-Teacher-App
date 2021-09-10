@@ -83,6 +83,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         b.putString("course", record.getCourse()); // Put in the course
         b.putInt("age", record.getAge()); // Put in the age
         b.putString("address", record.getAddress()); // Put in the address
+        b.putByteArray("image", record.getImage()); // Put the image in
 
         //Put the bundle of extras in the intent and start the activity
         i.putExtras(b);
@@ -140,6 +141,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         bundle.putString("course", item.getCourse()); // Put the course in the bundle
         bundle.putInt("age", item.getAge()); // Put the age in the bundle
         bundle.putString("address", item.getAddress()); // Put the address in the bundle
+        bundle.putByteArray("image", item.getImage()); // Put the image in the bundle
 
         RecordEditor fragment = new RecordEditor(activity); // Create a new RecordEditor fragment
         fragment.setArguments(bundle); // Put the bundle in the fragment

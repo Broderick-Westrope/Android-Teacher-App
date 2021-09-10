@@ -2,10 +2,13 @@ package com.broderickwestrope.whiteboard.exams;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -95,6 +98,7 @@ public class ViewRecordActivity extends AppCompatActivity implements DialogClose
         studentRecord.setCourse(b.getString("course")); // Set the students course
         studentRecord.setAge(b.getInt("age")); // Set the students age
         studentRecord.setAddress(b.getString("address")); // Set the students address
+        studentRecord.setImage(b.getByteArray("image")); // Set the students image
 
         // Set the corresponding text views to the data we were passed in the bundle
         ((TextView) findViewById(R.id.record_StudentID)).setText(String.valueOf(studentRecord.getId())); // Display their student ID
@@ -103,6 +107,12 @@ public class ViewRecordActivity extends AppCompatActivity implements DialogClose
         ((TextView) findViewById(R.id.record_Course)).setText(studentRecord.getCourse()); // Display their course
         ((TextView) findViewById(R.id.record_Age)).setText(String.valueOf(studentRecord.getAge())); // Display their age
         ((TextView) findViewById(R.id.record_Address)).setText(studentRecord.getAddress()); // Display their address
+        ((ImageView) findViewById(R.id.record_Image)).setImageBitmap(byteArrayToBitmap(studentRecord.getImage())); // Display their image
+    }
+
+    // Converts the byte-array to a bitmap image that we can display
+    private Bitmap byteArrayToBitmap(byte[] data) {
+        return BitmapFactory.decodeByteArray(data, 0, data.length);
     }
 
     @Override
