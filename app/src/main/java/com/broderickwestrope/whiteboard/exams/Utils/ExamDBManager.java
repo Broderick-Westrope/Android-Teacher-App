@@ -109,6 +109,44 @@ public class ExamDBManager extends SQLiteOpenHelper {
         return examList;
     }
 
+    // Allows us to get a list of exams that are coming soon
+    public List<ExamModel> getUpcomingExams() {
+        List<ExamModel> examList = new ArrayList<>(); // Create en empty list
+        Cursor cursor = null; // This cursor "points" to the result of our SQL query
+
+        // Getting the data within a transaction prevents loss of data if the user exits during execution
+        db.beginTransaction();
+        try {
+            // By setting all the values to null we select the entire database with no extra criteria (other than ordering them by ID)
+            cursor = db.query(EXAMS_TABLE, null, DATE + " IS NOT NULL", null, null, null, DATE + " ASC");
+            if (cursor != null) // If the cursor is not empty then it means we successfully selected some data
+            {
+                if (cursor.moveToFirst()) // Move the cursor to the first row (from the last row). False if the cursor is empty
+                {
+                    do {  //This is where we turn our query into a list of exams
+                        ExamModel exam = new ExamModel(); // Create a new exam
+                        exam.setExamID(cursor.getInt(cursor.getColumnIndex(EXAM_ID))); // Get the ID of the exam
+                        exam.setStudentId(cursor.getInt(cursor.getColumnIndex(STUDENT_ID))); // Get the ID of the student
+                        exam.setName(cursor.getString(cursor.getColumnIndex(NAME))); // Get the name
+                        exam.setUnit(cursor.getString(cursor.getColumnIndex(UNIT))); // Get the unit
+                        exam.setDate(cursor.getString(cursor.getColumnIndex(DATE))); // Get the date
+                        exam.setTime(cursor.getString(cursor.getColumnIndex(TIME))); // Get the time
+                        exam.setLocation(cursor.getString(cursor.getColumnIndex(LOCATION))); // Get the location
+                        exam.setDuration(cursor.getFloat(cursor.getColumnIndex(DURATION))); // Get the duration
+                        examList.add(exam);
+                    } while (cursor.moveToNext()); // Repeat for each remaining element
+                }
+            }
+        } finally {
+            // Once we have all the elements within the query, we want to end the transaction and close the cursor
+            db.endTransaction();
+            if (cursor != null)
+                cursor.close();
+        }
+        return examList;
+    }
+
+
     // Update the name/description of the specified exam (using that exams ID)
     public void updateExam(int id, String name, String unit, String date, String time, String location, float duration) {
         ContentValues cv = new ContentValues(); // We use CV's to store our values

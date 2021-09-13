@@ -51,7 +51,7 @@ public class ExamEditor extends BottomSheetDialogFragment {
     private ExamDBManager db;
 
     // Holds the instance of the activity
-    private ViewRecordActivity activity;
+    private Activity activity;
 
     // Views within our fragment:
     private TextView changeTitleTxt; // The title either reading "Edit Exam" or "New Exam"
@@ -68,7 +68,7 @@ public class ExamEditor extends BottomSheetDialogFragment {
     private TimePickerDialog.OnTimeSetListener timeSetListener; // Listens for the exam time being set
 
     // Class constructor
-    public ExamEditor(ViewRecordActivity activity, int studentID) {
+    public ExamEditor(Activity activity, int studentID) {
         this.activity = activity;
         this.studentID = studentID;
         examReminder = new ExamReminderManager(activity); //TODO Comment these lines

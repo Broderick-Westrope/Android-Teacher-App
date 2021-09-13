@@ -54,7 +54,7 @@ public class RecordEditor extends BottomSheetDialogFragment {
     private byte[] studentImage;
 
     // Holds the instance of the activity
-    private RecordsActivity activity;
+    private Activity activity;
 
     // Views within our fragment:
     private TextView changeTitleTxt; // The title either reading "Edit Record" or "New Record"
@@ -68,7 +68,7 @@ public class RecordEditor extends BottomSheetDialogFragment {
     private Button saveRecordBtn; // The button to save the changes to the record
 
     // Class constructor
-    public RecordEditor(RecordsActivity activity) {
+    public RecordEditor(Activity activity) {
         this.activity = activity;
     }
 

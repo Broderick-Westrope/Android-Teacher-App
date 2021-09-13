@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mirage">
 
     <TextView
+        android:id="@+id/home_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Home Fragment"
+        android:padding="5dp"
+        android:layout_marginLeft="25dp"
+        android:text="Upcoming Events"
         android:textColor="@color/geyser"
         android:textSize="30sp" />
+
+    <!--  The container for our cards. These cards serve the purpose of being our records  -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/examsRV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/home_title"
+        android:nestedScrollingEnabled="true"
+        android:padding="10dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </RelativeLayout>

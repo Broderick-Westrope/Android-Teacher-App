@@ -1,5 +1,6 @@
 package com.broderickwestrope.whiteboard.exams.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
@@ -33,7 +34,7 @@ import java.util.Locale;
 // The wrapper/adapter between the database and the recycler view
 public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
 
-    private final ViewRecordActivity activity; // The activity that is using this adapter to display the exams
+    private final Activity activity; // The activity that is using this adapter to display the exams
     private final ExamDBManager db;  // Our database manager for the exams (using SQLite)
     private List<ExamModel> examList; // A list of all of our exams
 
@@ -42,7 +43,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
     private int card_pastColor = R.color.texas_rose;
 
     // Class constructor
-    public ExamAdapter(ExamDBManager db, ViewRecordActivity activity) {
+    public ExamAdapter(ExamDBManager db, Activity activity) {
         this.activity = activity; // Set the containing activity
         this.db = db; // Set the database being used
     }
@@ -246,7 +247,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
 
         ExamEditor fragment = new ExamEditor(activity, exam.getStudentId()); // Create a new ExamEditor fragment
         fragment.setArguments(bundle); // Put the bundle in the fragment
-        fragment.show(activity.getSupportFragmentManager(), ExamEditor.TAG); // Display the fragment
+        fragment.show(((ViewRecordActivity) activity).getSupportFragmentManager(), ExamEditor.TAG); // Display the fragment
     }
 
     // Returns the current activity

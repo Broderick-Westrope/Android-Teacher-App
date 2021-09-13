@@ -1,5 +1,6 @@
 package com.broderickwestrope.whiteboard.student_records.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager;
 import com.broderickwestrope.whiteboard.exams.ViewRecordActivity;
 import com.broderickwestrope.whiteboard.student_records.Models.RecordModel;
 import com.broderickwestrope.whiteboard.student_records.RecordEditor;
@@ -28,14 +28,14 @@ import java.util.Random;
 // The wrapper/adapter between the database and the recycler view
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder> {
 
-    private final ExamDBManager examDB;  // The database manager for the exams (using SQLite)
+    private final com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager examDB;  // The database manager for the exams (using SQLite)
     private List<RecordModel> recordList; // A list of all of our records
-    private RecordsActivity activity; // The activity that is using this adapter to display the records
+    private Activity activity; // The activity that is using this adapter to display the records
     private RecordDBManager db;  // Our database manager for the records (using SQLite)
 
 
     // Class constructor
-    public RecordAdapter(RecordDBManager db, RecordsActivity activity, ExamDBManager examDB) {
+    public RecordAdapter(RecordDBManager db, Activity activity, com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager examDB) {
         this.activity = activity; // Set the containing activity
         this.db = db; // Set the database being used
         this.examDB = examDB; // Set the exam database being used
@@ -153,7 +153,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
 
         RecordEditor fragment = new RecordEditor(activity); // Create a new RecordEditor fragment
         fragment.setArguments(bundle); // Put the bundle in the fragment
-        fragment.show(activity.getSupportFragmentManager(), RecordEditor.TAG); // Display the fragment
+        fragment.show(((RecordsActivity) activity).getSupportFragmentManager(), RecordEditor.TAG); // Display the fragment
     }
 
     // Returns the current activity
