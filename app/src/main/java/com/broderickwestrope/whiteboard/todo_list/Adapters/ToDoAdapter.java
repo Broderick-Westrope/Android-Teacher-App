@@ -94,7 +94,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         notifyItemRemoved(index); // Update the recycler view
 
         // Create a snackbar to say that the entry was deleted and allow the user to undo this if it was a mistake
-        Snackbar.make(getContext(), activity.findViewById(R.id.content), "Task Deleted.", Snackbar.LENGTH_SHORT).setAction("UNDO", new View.OnClickListener() {
+        Snackbar.make(getContext(), activity.findViewById(R.id.content), "Task Deleted.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 taskList.add(item); // Add to the local list

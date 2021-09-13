@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
+import com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager;
 import com.broderickwestrope.whiteboard.exams.ViewRecordActivity;
 import com.broderickwestrope.whiteboard.student_records.Models.RecordModel;
 import com.broderickwestrope.whiteboard.student_records.RecordEditor;
@@ -27,14 +28,17 @@ import java.util.Random;
 // The wrapper/adapter between the database and the recycler view
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder> {
 
+    private final ExamDBManager examDB;  // The database manager for the exams (using SQLite)
     private List<RecordModel> recordList; // A list of all of our records
     private RecordsActivity activity; // The activity that is using this adapter to display the records
     private RecordDBManager db;  // Our database manager for the records (using SQLite)
 
+
     // Class constructor
-    public RecordAdapter(RecordDBManager db, RecordsActivity activity) {
+    public RecordAdapter(RecordDBManager db, RecordsActivity activity, ExamDBManager examDB) {
         this.activity = activity; // Set the containing activity
         this.db = db; // Set the database being used
+        this.examDB = examDB; // Set the exam database being used
     }
 
     // Inflates (ie. sets up) the given record/card view
@@ -105,11 +109,12 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
     public void deleteItem(int index) {
         RecordModel item = recordList.get(index); // Get the item from the list
         db.deleteRecord(item.getId()); // Remove the item from the database
+        examDB.deleteStudent(item.getId()); //Remove all the exams of this student
         recordList.remove(index); // Remove the item from the list
         notifyItemRemoved(index); // Update the recycler view
 
         // Create a snackbar to say that the entry was deleted and allow the user to undo this if it was a mistake
-        Snackbar.make(getContext(), activity.findViewById(R.id.content), "Record Deleted.", Snackbar.LENGTH_SHORT).setAction("UNDO", new View.OnClickListener() {
+        Snackbar.make(getContext(), activity.findViewById(R.id.content), "Record Deleted.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 recordList.add(item); // Add to the local list
@@ -121,14 +126,17 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
 
     // Used to delete all record items
     public void deleteAll() {
+        //Delete all records
         int size = recordList.size();
         for (int i = 0; i < size; i++) {
             RecordModel item = recordList.get(i); // Get the item from the list
             db.deleteRecord(item.getId()); // Remove the item from the database
         }
-
         recordList.clear(); // Remove the item from the list
         notifyItemRangeRemoved(0, size); // Tell the recycler view that elements were removed at the given position
+
+        //Delete all exams
+        examDB.deleteAll();
     }
 
     // Edit the item at the given index

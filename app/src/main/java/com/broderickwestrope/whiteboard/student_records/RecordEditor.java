@@ -47,10 +47,6 @@ public class RecordEditor extends BottomSheetDialogFragment {
     // Store the type of dialogue for easy access outside of the class
     public static final String TAG = "ActionBottomDialog";
 
-    // Assign colors for when the save button is either enabled or disabled (minimising inconsistencies)
-    int enabledColor = R.color.mirage2;
-    int disabledColor = R.color.geyser;
-
     // Our database manager for the records (using SQLite)
     private RecordDBManager db;
 
@@ -109,10 +105,6 @@ public class RecordEditor extends BottomSheetDialogFragment {
         // Used to differentiate between when we are trying to create a new record or update an existing record
         boolean isUpdate = false;
 
-        // Set the color of the button to red (showing it is enabled)
-        saveRecordBtn.setEnabled(true);
-        saveRecordBtn.setTextColor(ContextCompat.getColor(requireContext(), enabledColor));
-
         // The bundle lets us get any data passed to this fragment
         final Bundle bundle = getArguments();
         if (bundle != null) // If our bundle isn't empty (ie. we were passed data)
@@ -135,7 +127,8 @@ public class RecordEditor extends BottomSheetDialogFragment {
             editRecord_Course.setText(course); // Display the existing course in the input field
             editRecord_Age.setText(String.valueOf(age)); // Display the existing age in the input field
             editRecord_Address.setText(address); // Display the existing address in the input field
-            editRecord_studentImage.setImageBitmap(byteArrayToBitmap(studentImage));
+            if (studentImage != null)
+                editRecord_studentImage.setImageBitmap(byteArrayToBitmap(studentImage));
         } else { // Else, if weren't passed any data, then we are creating a new record
             changeTitleTxt.setText("New Record"); // Display that the user is creating a new record
         }

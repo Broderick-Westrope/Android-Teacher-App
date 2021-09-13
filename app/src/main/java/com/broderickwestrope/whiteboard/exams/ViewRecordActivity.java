@@ -111,7 +111,8 @@ public class ViewRecordActivity extends AppCompatActivity implements DialogClose
         ((TextView) findViewById(R.id.record_Course)).setText(studentRecord.getCourse()); // Display their course
         ((TextView) findViewById(R.id.record_Age)).setText(String.valueOf(studentRecord.getAge())); // Display their age
         ((TextView) findViewById(R.id.record_Address)).setText(studentRecord.getAddress()); // Display their address
-        ((ImageView) findViewById(R.id.record_Image)).setImageBitmap(byteArrayToBitmap(studentRecord.getImage())); // Display their image
+        if (studentRecord.getImage() != null)
+            ((ImageView) findViewById(R.id.record_Image)).setImageBitmap(byteArrayToBitmap(studentRecord.getImage())); // Display their image
 
         // Set the onclick for seeing the address on the google-maps activity
         ((Button) findViewById(R.id.record_SeeMapBtn)).setOnClickListener(v -> {

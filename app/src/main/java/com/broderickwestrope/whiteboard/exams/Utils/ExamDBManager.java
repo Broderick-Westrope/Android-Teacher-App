@@ -125,4 +125,15 @@ public class ExamDBManager extends SQLiteOpenHelper {
     public void deleteExam(int id) {
         db.delete(EXAMS_TABLE, EXAM_ID + "=?", new String[]{String.valueOf(id)});
     }
+
+    // Delete the exams with the specified student ID
+    public void deleteStudent(int id) {
+        db.delete(EXAMS_TABLE, STUDENT_ID + "=?", new String[]{String.valueOf(id)});
+    }
+
+    // Delete all the exams
+    public void deleteAll() {
+        String clearDBQuery = "DELETE FROM " + EXAMS_TABLE;
+        db.execSQL(clearDBQuery);
+    }
 }

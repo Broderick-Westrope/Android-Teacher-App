@@ -210,7 +210,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         notifyItemRemoved(index); // Update the recycler view
 
         // Create a snackbar to say that the entry was deleted and allow the user to undo this if it was a mistake
-        Snackbar.make(getContext(), activity.findViewById(R.id.content), "Exam Deleted.", Snackbar.LENGTH_SHORT).setAction("UNDO", new View.OnClickListener() {
+        Snackbar.make(getContext(), activity.findViewById(R.id.content), "Exam Deleted.", Snackbar.LENGTH_LONG).setAction("UNDO", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 examList.add(item); // Add to the local list

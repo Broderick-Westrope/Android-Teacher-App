@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
+import com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager;
 import com.broderickwestrope.whiteboard.student_records.Adapters.RecordAdapter;
 import com.broderickwestrope.whiteboard.student_records.Models.RecordModel;
 import com.broderickwestrope.whiteboard.student_records.Utils.RecordDBManager;
@@ -30,6 +31,7 @@ public class RecordsActivity extends AppCompatActivity implements DialogCloseLis
     private RecordAdapter recordsAdapter; // The wrapper/adapter between the database and the recycler view
     private List<RecordModel> recordList; // A list of all of our records
     private RecordDBManager db; // Our database manager for the records (using SQLite)
+    private ExamDBManager examDB; // Our database manager for the exams (using SQLite)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,10 @@ public class RecordsActivity extends AppCompatActivity implements DialogCloseLis
         db = new RecordDBManager(this);
         db.openDatabase();
 
+        // Create our exam database manager and open it for use
+        examDB = new ExamDBManager(this);
+        examDB.openDatabase();
+
         // Get the view of our "delete all" button (the bin symbol)
         deleteAllView = findViewById(R.id.deleteAllAction);
         // Get the view of our "add record" button (the plus symbol)
@@ -54,7 +60,7 @@ public class RecordsActivity extends AppCompatActivity implements DialogCloseLis
         // Get the recycler view that contains our list of records
         RecyclerView recordsRV = findViewById(R.id.recordsRV);
         recordsRV.setLayoutManager(new LinearLayoutManager(this));
-        recordsAdapter = new RecordAdapter(db, this); // Create a new adapter
+        recordsAdapter = new RecordAdapter(db, this, examDB); // Create a new adapter
         recordsRV.setAdapter(recordsAdapter); // Attach the adapter to the recycler view
 
         // Create a new touch helper (this allows our swiping actions) and attach to the recycler view
