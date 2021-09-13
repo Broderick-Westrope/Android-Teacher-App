@@ -1,24 +1,23 @@
 package com.broderickwestrope.whiteboard.home_screen;
 
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.exams.Adapters.ExamAdapter;
-import com.broderickwestrope.whiteboard.exams.ExamTouchHelper;
 import com.broderickwestrope.whiteboard.exams.Models.ExamModel;
 import com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -50,12 +49,23 @@ public class HomeFragment extends Fragment {
         examsRV.setAdapter(examsAdapter); // Attach the adapter to the recycler view
 
         examList = new ArrayList<>(); // Create our local list of exams
-        examList = db.getUpcomingExams(); // Assign any existing exams from the database
+        examList = db.getUpcomingExams(getDateAndTime()); // Assign any existing exams from the database
         examsAdapter.setExams(examList); // Set the recycler view to contain these exams (using the adapter)
     }
 
-    public void getDateAndTime()
-    {
+    public Pair<String, String> getDateAndTime() {
+        String today, weeksTime;
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        today = day + "/" + month + "/" + year;
 
+        calendar.add(Calendar.DAY_OF_MONTH, 7);
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        weeksTime = day + "/" + month + "/" + year;
+        return new Pair<>(today, weeksTime);
     }
 }

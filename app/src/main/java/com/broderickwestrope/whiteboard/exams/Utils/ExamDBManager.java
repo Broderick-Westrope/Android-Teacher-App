@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Pair;
 
 import com.broderickwestrope.whiteboard.exams.Models.ExamModel;
 
@@ -110,15 +111,16 @@ public class ExamDBManager extends SQLiteOpenHelper {
     }
 
     // Allows us to get a list of exams that are coming soon
-    public List<ExamModel> getUpcomingExams() {
+    public List<ExamModel> getUpcomingExams(Pair<String, String> date) {
         List<ExamModel> examList = new ArrayList<>(); // Create en empty list
         Cursor cursor = null; // This cursor "points" to the result of our SQL query
 
         // Getting the data within a transaction prevents loss of data if the user exits during execution
         db.beginTransaction();
         try {
+            // DATE + " BETWEEN " + date.first + " AND " + date.second
             // By setting all the values to null we select the entire database with no extra criteria (other than ordering them by ID)
-            cursor = db.query(EXAMS_TABLE, null, DATE + " IS NOT NULL", null, null, null, DATE + " ASC");
+            cursor = db.query(EXAMS_TABLE, null, DATE + ">" + date.first, null, null, null, DATE + " ASC");
             if (cursor != null) // If the cursor is not empty then it means we successfully selected some data
             {
                 if (cursor.moveToFirst()) // Move the cursor to the first row (from the last row). False if the cursor is empty
