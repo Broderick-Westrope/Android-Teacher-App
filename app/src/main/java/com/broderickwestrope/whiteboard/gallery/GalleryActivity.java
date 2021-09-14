@@ -3,10 +3,14 @@ package com.broderickwestrope.whiteboard.gallery;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,8 +23,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.gallery.Adapters.GalleryAdapter;
+import com.broderickwestrope.whiteboard.student_records.Utils.RecordDBManager;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class GalleryActivity extends AppCompatActivity {
@@ -30,19 +36,22 @@ public class GalleryActivity extends AppCompatActivity {
     ArrayList<String> images;
     ArrayList<String> selectedImages;
     Toolbar toolbar;
+    RecordDBManager recordsDB;
     private GalleryAdapter.PhotoListener photoListener = new GalleryAdapter.PhotoListener() {
         @Override
         public void onPhotoClick(String path, GalleryAdapter.ViewHolder holder) {
             // Do something with the photos when clicked
             Snackbar.make(findViewById(R.id.content), "Pressed " + path, Snackbar.LENGTH_SHORT).show();
-            selectedImages.remove(path);
-            holder.checkBox.setVisibility(CheckBox.INVISIBLE);
-//            holder.checkBox.setChecked(false);
+            if (selectedImages.remove(path))
+                holder.checkBox.setVisibility(CheckBox.INVISIBLE);
+            else
+                // This is where we want to set a student image from the gallery
+                openImagePopup(path);
         }
 
         @Override
         public void onPhotoLongClick(String path, GalleryAdapter.ViewHolder holder) {
-            // Do something with the photos when clicked
+            // Do something with the photos when held
             Snackbar.make(findViewById(R.id.content), "Held " + path, Snackbar.LENGTH_SHORT).show();
             if (!selectedImages.contains(path))
                 selectedImages.add(path);
@@ -57,6 +66,10 @@ public class GalleryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gallery);
 
         selectedImages = new ArrayList<>();
+
+        // Create our database manager and open it for use
+        recordsDB = new RecordDBManager(this);
+        recordsDB.openDatabase();
 
         // Set the support action bar to our custom action bar with the title "Photos"
         toolbar = findViewById(R.id.toolbar);
@@ -134,5 +147,40 @@ public class GalleryActivity extends AppCompatActivity {
 
         gallery_ImagesRV.setAdapter(galleryAdapter);
         toolbar.setTitle("Photos (" + images.size() + ")");
+    }
+
+    private void openImagePopup(String path) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(GalleryActivity.this); //? Not sure about this second parameter
+        final View popupLayout = getLayoutInflater().inflate(R.layout.enter_student_id_popup, null);
+        builder.setView(popupLayout);
+        builder.setTitle("Assign Image to Student");
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) ->
+        {
+            EditText editText = popupLayout.findViewById(R.id.enter_StudentID);
+            String idString = String.valueOf(editText.getText());
+            int studentID;
+            if (!idString.isEmpty()) {
+                studentID = Integer.parseInt(idString); // TODO make it so this edit text can only have 8 numeric digits
+                setStudentImage(path, studentID);
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> {
+        });
+        builder.create().show();
+    }
+
+    private void setStudentImage(String path, int id) {
+        //Get the image bitmap
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
+
+        //Convert the bitmap to a byte array
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        byte[] byteArray = outputStream.toByteArray();
+
+        if (recordsDB.updateImage(id, byteArray))
+            Snackbar.make(findViewById(R.id.content), "Image updated successfully.", Snackbar.LENGTH_SHORT).show();
+        else
+            Snackbar.make(findViewById(R.id.content), "Failed to update the image: The student does not exist.", Snackbar.LENGTH_SHORT).show();
     }
 }
