@@ -52,8 +52,6 @@ public class ExamReminderManager extends ContextWrapper { //TODO comment this wh
 
 
     public void setReminder(Calendar c, ExamModel exam) {
-//        c.add(Calendar.MILLISECOND, -0); //TODO This is where we want to change the delay based on the users settings
-
         Notification notification = getNotification(exam.getName(), exam.getUnit(), exam.getDate(), exam.getTime());
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -72,7 +70,6 @@ public class ExamReminderManager extends ContextWrapper { //TODO comment this wh
 
     // Creates a notification (using NotificationCompat.Builder) for an exam with the given text.
     private Notification getNotification(String name, String unit, String date, String time) {
-        // TODO Comment this better/more
         // This schedules a notification when the exam is edited using our function to determine when
         String smallContent = "Don't forget about \"" + name + "\" for " + unit;
         String bigContent = "Don't forget that \"" + name + "\" for " + unit + " is coming up on " + time + " on " + date + ".";

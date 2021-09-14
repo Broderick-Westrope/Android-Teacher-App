@@ -19,11 +19,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.core.content.ContextCompat;
 
 import com.broderickwestrope.whiteboard.Interfaces.DialogCloseListener;
-import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.Models.ExamModel;
+import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.Utils.ExamDBManager;
 import com.broderickwestrope.whiteboard.exams.ExamReminderManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -37,30 +36,19 @@ public class ExamEditor extends BottomSheetDialogFragment {
 
     // Store the type of dialogue for easy access outside of the class
     public static final String TAG = "ActionBottomDialog";
-
-    // Assign colors for when the save button is either enabled or disabled (minimising inconsistencies)
-    int enabledColor = R.color.mirage2;
-    int disabledColor = R.color.geyser;
-
-    int studentID;
-    ExamReminderManager examReminder;//TODO comment
-    Calendar examCalendar;
-
+    // Holds the instance of the activity
+    private final Activity activity;
+    int studentID; // The student ID of the person whose exam it is
+    ExamReminderManager examReminder; // The class to handle exam reminder notifications
+    Calendar examCalendar; // The calendar to store the date and time of the exam
     // Our database manager for the exams (using SQLite)
     private ExamDBManager db;
-
-    // Holds the instance of the activity
-    private Activity activity;
-
-    // Views within our fragment:
-    private TextView changeTitleTxt; // The title either reading "Edit Exam" or "New Exam"
     private EditText editExam_Name; // The field for the exam name input
     private EditText editExam_Unit; // The field for the exam unit/subject input
     private TextView editExam_Date; // The field for the exam date input
     private TextView editExam_Time; // The field for the exam time input
     private EditText editExam_Location; // The field for the exam location input
     private EditText editExam_Duration; // The field for the exam duration input
-    private Button saveExamBtn; // The button to save the changes to the exam
 
     // These are event listeners for changing the date and time using the date and time picker dialogs
     private DatePickerDialog.OnDateSetListener dateSetListener; // Listens for the exam date being set
@@ -68,10 +56,10 @@ public class ExamEditor extends BottomSheetDialogFragment {
 
     // Class constructor
     public ExamEditor(Activity activity, int studentID) {
-        this.activity = activity;
-        this.studentID = studentID;
-        examReminder = new ExamReminderManager(activity); //TODO Comment these lines
-        examCalendar = Calendar.getInstance();
+        this.activity = activity; // Set the activity from which this fragment is being accessed
+        this.studentID = studentID; // Set the student ID of the person whose exam it is
+        examReminder = new ExamReminderManager(activity); // Create a new instance of the class to handle exam reminder notifications
+        examCalendar = Calendar.getInstance(); // Get a new instance of the current calendar (with present time)
     }
 
     // Add our custom style to the on create method
@@ -89,27 +77,27 @@ public class ExamEditor extends BottomSheetDialogFragment {
         return view;
     }
 
+    // When the fragment is created, set all of the view references
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // Collect the references to the views
-        changeTitleTxt = requireView().findViewById(R.id.editExam_Title);
+        // Views within our fragment:
+        // The title either reading "Edit Exam" or "New Exam"
+        TextView changeTitleTxt = requireView().findViewById(R.id.editExam_Title);
         editExam_Name = requireView().findViewById(R.id.editExam_Name);
         editExam_Unit = requireView().findViewById(R.id.editExam_Unit);
         editExam_Date = requireView().findViewById(R.id.editExam_Date);
         editExam_Time = requireView().findViewById(R.id.editExam_Time);
         editExam_Location = requireView().findViewById(R.id.editExam_Location);
         editExam_Duration = requireView().findViewById(R.id.editExam_Duration);
-        saveExamBtn = requireView().findViewById(R.id.saveExamBtn);
+        // The button to save the changes to the exam
+        Button saveExamBtn = requireView().findViewById(R.id.saveExamBtn);
 
         // Used to differentiate between when we are trying to create a new exam or update an existing exam
         boolean isUpdate = false;
-
-        // Set the color of the button to red (showing it is enabled)
-        saveExamBtn.setEnabled(true);
-        saveExamBtn.setTextColor(ContextCompat.getColor(requireContext(), enabledColor));
 
         // The bundle lets us get any data passed to this fragment
         final Bundle bundle = getArguments();
@@ -155,14 +143,13 @@ public class ExamEditor extends BottomSheetDialogFragment {
         editExam_Time.setOnClickListener(v -> onTimeClicked());
 
         // This is the listener that is called when the user chooses a date for the exam using the date picker dialog
-        timeSetListener = (view1, hourOfDay, minute) -> { //TODO Comment this
-            setTime(hourOfDay, minute);
-        };
+        timeSetListener = (view1, hourOfDay, minute) -> setTime(hourOfDay, minute);
     }
 
 
-    //TODO Comment these four date and time functions
+    // Save the values when the save button is pressed
     private void onSaveClicked(boolean isUpdate, int id) {
+        // Do not save if we have not got all of the information
         if (!canSaveExam(editExam_Name, editExam_Unit, editExam_Date, editExam_Time, editExam_Location, editExam_Duration))
             return;
 
@@ -184,7 +171,7 @@ public class ExamEditor extends BottomSheetDialogFragment {
         exam.setLocation(location);
         exam.setDuration(duration);
 
-        if (isUpdate) { // If we are updating an existing exam and the student ID hasnt been changed
+        if (isUpdate) { // If we are updating an existing exam and the student ID hasn't been changed
             db.updateExam(id, name, unit, date, time, location, duration); // Update the elements of the exam
         } else { // Else, if we are adding a new exam
             db.insertExam(exam); // Insert the exam to the database
