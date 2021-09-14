@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.todo_list;
+package com.broderickwestrope.whiteboard.Editors;
 
 import android.app.Activity;
 import android.content.DialogInterface;

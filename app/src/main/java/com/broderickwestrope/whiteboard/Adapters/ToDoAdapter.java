@@ -7,18 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.broderickwestrope.whiteboard.R;
+import com.broderickwestrope.whiteboard.Editors.TaskEditor;
 import com.broderickwestrope.whiteboard.Models.TaskModel;
-import com.broderickwestrope.whiteboard.todo_list.TaskEditor;
-import com.broderickwestrope.whiteboard.todo_list.TodoActivity;
+import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.Utils.TaskDBManager;
+import com.broderickwestrope.whiteboard.todo_list.TodoActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -53,10 +52,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         holder.task.setChecked(item.getStatus() != 0); // Convert the int to bool and set the status of the task
 
         // Select a random color for card background (from the given array) :)
-        Random random = new Random();
-        String[] colorArray = getContext().getResources().getStringArray(R.array.card_colors);
-        String randomColorName = colorArray[random.nextInt(colorArray.length)];
-        holder.card.setBackgroundColor(Color.parseColor(randomColorName));
+        setRandomColor(holder.card);
 
         // Check if the location was set (since this is optional) and only display it if it has contents
         String location = item.getLocation();
@@ -66,13 +62,28 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
             holder.location.setEnabled(false);
 
         // Listen for changes in the tasks' status
-        holder.task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // Update the status of the database item
-                db.updateStatus(item.getId(), (isChecked ? 1 : 0));
-            }
+        holder.task.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Update the status of the database item
+            db.updateStatus(item.getId(), (isChecked ? 1 : 0));
         });
+
+        holder.card.setOnClickListener(v -> {
+            holder.task.setChecked(!holder.task.isChecked());
+        });
+
+        holder.card.setOnLongClickListener((v) -> {
+            // Select a random color for card background (from the given array) :)
+            setRandomColor(holder.card);
+            return false;
+        });
+    }
+
+    private void setRandomColor(View v) {
+        // Select a random color for card background (from the given array) :)
+        Random random = new Random();
+        String[] colorArray = getContext().getResources().getStringArray(R.array.card_colors);
+        String randomColorName = colorArray[random.nextInt(colorArray.length)];
+        v.setBackgroundColor(Color.parseColor(randomColorName));
     }
 
     // Returns the number of tasks in our list of tasks (ie. the length of the to-do list)

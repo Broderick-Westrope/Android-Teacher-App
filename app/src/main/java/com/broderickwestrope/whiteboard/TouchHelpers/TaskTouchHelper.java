@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.todo_list;
+package com.broderickwestrope.whiteboard.TouchHelpers;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

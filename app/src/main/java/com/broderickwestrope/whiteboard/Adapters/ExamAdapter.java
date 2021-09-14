@@ -20,7 +20,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.exams.ExamEditor;
+import com.broderickwestrope.whiteboard.Editors.ExamEditor;
 import com.broderickwestrope.whiteboard.Models.ExamModel;
 import com.broderickwestrope.whiteboard.Utils.ExamDBManager;
 import com.broderickwestrope.whiteboard.exams.ViewExamActivity;

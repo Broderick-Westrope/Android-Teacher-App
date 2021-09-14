@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.broderickwestrope.whiteboard.Editors.TaskEditor;
 import com.broderickwestrope.whiteboard.Interfaces.DialogCloseListener;
 import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.Adapters.ToDoAdapter;
 import com.broderickwestrope.whiteboard.Models.TaskModel;
+import com.broderickwestrope.whiteboard.TouchHelpers.TaskTouchHelper;
 import com.broderickwestrope.whiteboard.Utils.TaskDBManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

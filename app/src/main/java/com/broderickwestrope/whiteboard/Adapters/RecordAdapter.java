@@ -18,7 +18,7 @@ import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.Utils.ExamDBManager;
 import com.broderickwestrope.whiteboard.exams.ViewRecordActivity;
 import com.broderickwestrope.whiteboard.Models.RecordModel;
-import com.broderickwestrope.whiteboard.student_records.RecordEditor;
+import com.broderickwestrope.whiteboard.Editors.RecordEditor;
 import com.broderickwestrope.whiteboard.student_records.RecordsActivity;
 import com.broderickwestrope.whiteboard.Utils.RecordDBManager;
 import com.google.android.material.snackbar.Snackbar;

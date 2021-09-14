@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.exams;
+package com.broderickwestrope.whiteboard.Editors;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -25,6 +25,7 @@ import com.broderickwestrope.whiteboard.Interfaces.DialogCloseListener;
 import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.Models.ExamModel;
 import com.broderickwestrope.whiteboard.Utils.ExamDBManager;
+import com.broderickwestrope.whiteboard.exams.ExamReminderManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.Calendar;

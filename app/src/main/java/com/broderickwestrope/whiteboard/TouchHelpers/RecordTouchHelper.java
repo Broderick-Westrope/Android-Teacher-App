@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.exams;
+package com.broderickwestrope.whiteboard.TouchHelpers;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,14 +12,14 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.Adapters.ExamAdapter;
+import com.broderickwestrope.whiteboard.Adapters.RecordAdapter;
 
-// This is a touch helper, allowing us to have swipe actions for our exams (such as edit and delete)
-public class ExamTouchHelper extends ItemTouchHelper.SimpleCallback {
-    private ExamAdapter adapter; // The adapter for the recycler view
+// THis is a touch helper, allowing us to have swipe actions for our records (such as edit and delete)
+public class RecordTouchHelper extends ItemTouchHelper.SimpleCallback {
+    private RecordAdapter adapter; // The adapter for the recycler view
 
     // The class constructor
-    public ExamTouchHelper(ExamAdapter adapter) {
+    public RecordTouchHelper(RecordAdapter adapter) {
         // Set the two swipe-types we want to use (left and right
         super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
         this.adapter = adapter; //Set the local adapter to the given adapter (this will be the adapter made by the TodoActivity)
@@ -34,16 +34,16 @@ public class ExamTouchHelper extends ItemTouchHelper.SimpleCallback {
     // Whenever an element is "swiped" this function will run
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        // Get the index of the exam that was swiped
+        // Get the index of the record that was swiped
         final int index = viewHolder.getAbsoluteAdapterPosition();
 
-        // If the exam was swiped left
+        // If the record was swiped left
         if (direction == ItemTouchHelper.LEFT) {
-            // Call the function for deleting the exam
+            // Call the function for deleting the record
             adapter.deleteItem(index);
-        } else { // Else, if the exam was swiped right
-            // Call the function for editing the exam
-            adapter.editExam(index);
+        } else { // Else, if the record was swiped right
+            // Call the function for editing the record
+            adapter.editRecord(index);
         }
     }
 
@@ -55,17 +55,17 @@ public class ExamTouchHelper extends ItemTouchHelper.SimpleCallback {
         Drawable icon; // The icon for the action (ie. bin for delete)
         ColorDrawable background; // The colored background of the swipe
 
-        View itemView = viewHolder.itemView; // The view of the exam (this allows us to match its dimensions)
+        View itemView = viewHolder.itemView; // The view of the record (this allows us to match its dimensions)
         int backgroundCornerOffset = 20;
 
         // Depending on the value along the X axis, we set a different background color
         if (dX > 0) {
-            // When X is greater-than 0 it means we have swiped to the right and are trying to edit the exam
+            // When X is greater-than 0 it means we have swiped to the right and are trying to edit the record
             // For this we use the edit symbol and a turquoise color
             icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.ic_edit);
             background = new ColorDrawable(ContextCompat.getColor(adapter.getContext(), R.color.turquoise_blue));
         } else {
-            // When X is less-than 0 it means we have swiped to the left and are trying to delete the exam
+            // When X is less-than 0 it means we have swiped to the left and are trying to delete the record
             // For this we use the bin symbol and a red color
             icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.ic_delete);
             background = new ColorDrawable(Color.RED);

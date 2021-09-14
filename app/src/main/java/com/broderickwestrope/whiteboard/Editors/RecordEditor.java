@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.student_records;
+package com.broderickwestrope.whiteboard.Editors;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
