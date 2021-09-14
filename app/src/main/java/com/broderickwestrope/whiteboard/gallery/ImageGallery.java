@@ -17,8 +17,8 @@ public class ImageGallery {
 
         String[] projection = {MediaStore.MediaColumns.DATA, MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
 
-        String orderBy = MediaStore.Video.Media.DATE_TAKEN;
-        cursor = context.getContentResolver().query(uri, projection, null, null, orderBy + " DESC");
+//        String ORDER_BY = MediaStore.Video.Media.DATE_TAKEN;
+        cursor = context.getContentResolver().query(uri, projection, null, null, MediaStore.Video.Media.DATE_TAKEN + " DESC");
 
         columnIndexData = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
 
