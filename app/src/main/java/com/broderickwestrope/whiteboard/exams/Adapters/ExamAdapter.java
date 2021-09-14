@@ -3,6 +3,7 @@ package com.broderickwestrope.whiteboard.exams.Adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,10 +27,12 @@ import com.broderickwestrope.whiteboard.exams.ViewExamActivity;
 import com.broderickwestrope.whiteboard.exams.ViewRecordActivity;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 // The wrapper/adapter between the database and the recycler view
 public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
@@ -37,6 +40,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
     private final Activity activity; // The activity that is using this adapter to display the exams
     private final ExamDBManager db;  // Our database manager for the exams (using SQLite)
     private List<ExamModel> examList; // A list of all of our exams
+    private List<ExamModel> selectedList; // A list of all selected exams
 
     private int card_futureColor = R.color.yellow_green;
     private int card_runningColor = R.color.turquoise_blue;
@@ -62,6 +66,8 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         ExamModel item = examList.get(index); // Get the exam from the list using the specified index
         String timeTillExam = timeTillExam(item.getDate(), item.getTime(), item.getDuration()); // Get the time till the exam
 
+        selectedList = new ArrayList<>();
+
         holder.name.setText(item.getName()); // Set the name to the exam's name
         holder.unit.setText(item.getUnit()); // Set the unit to the exam's unit
         holder.timeBetween.setText(timeTillExam); // Set the date to the exam's date
@@ -75,13 +81,16 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
             holder.card.setBackgroundColor(ContextCompat.getColor(activity, card_pastColor));
 
         // Listen for clicks on the "SEE MORE" button to view the students exams
-        holder.card.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View v) {
-                // Takes us to a new activity listing the information for this exam
-                viewExam(item);
-            }
+        holder.card.setOnClickListener(v -> {
+            // Takes us to a new activity listing the information for this exam
+            viewExam(item);
+        });
+
+        // Listen for clicks on the "SEE MORE" button to view the students exams
+        holder.card.setOnLongClickListener(v -> {
+            // Takes us to a new activity listing the information for this exam
+            toggleSelected(item, holder.card);
+            return false;
         });
     }
 
@@ -104,6 +113,20 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         //Put the bundle of extras in the intent and start the activity
         i.putExtras(b);
         activity.startActivity(i);
+    }
+
+    private void toggleSelected(ExamModel exam, RelativeLayout card) {
+        if (selectedList.remove(exam)) {
+            // Select a random color for card background (from the given array) :)
+            Random random = new Random();
+            String[] colorArray = getContext().getResources().getStringArray(R.array.card_colors);
+            String randomColorName = colorArray[random.nextInt(colorArray.length)];
+            card.setBackgroundColor(Color.parseColor(randomColorName));
+
+        } else {
+            selectedList.add(exam);
+            card.setBackgroundColor(activity.getResources().getColor(R.color.geyser));
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -221,8 +244,25 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         }).show();
     }
 
+    public void deleteSelected() {
+        if (selectedList.size() == 0) {
+            deleteAll();
+            return;
+        }
+
+        int size = selectedList.size();
+        for (int i = 0; i < size; i++) {
+            ExamModel item = selectedList.get(i); // Get the item from the list
+            examList.remove(item);
+            db.deleteExam(item.getExamID()); // Remove the item from the database
+        }
+
+        selectedList.clear(); // Remove the item from the list
+        notifyDataSetChanged(); // Tell the recycler view that elements were removed at the given position
+    }
+
     // Used to delete all exam items
-    public void deleteAll() {
+    private void deleteAll() {
         int size = examList.size();
         for (int i = 0; i < size; i++) {
             ExamModel item = examList.get(i); // Get the item from the list

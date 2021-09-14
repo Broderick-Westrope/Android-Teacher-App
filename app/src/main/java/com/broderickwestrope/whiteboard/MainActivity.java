@@ -14,7 +14,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.broderickwestrope.whiteboard.gallery.GalleryActivity;
-import com.broderickwestrope.whiteboard.home_screen.HomeFragment;
 import com.broderickwestrope.whiteboard.student_records.RecordsActivity;
 import com.broderickwestrope.whiteboard.todo_list.TodoActivity;
 import com.google.android.material.navigation.NavigationView;

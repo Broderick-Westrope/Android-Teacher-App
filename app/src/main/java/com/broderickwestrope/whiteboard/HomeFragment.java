@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.home_screen;
+package com.broderickwestrope.whiteboard;
 
 import android.os.Bundle;
 import android.util.Pair;

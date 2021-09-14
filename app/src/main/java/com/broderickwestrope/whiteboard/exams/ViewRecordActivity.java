@@ -22,9 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.exams.Adapters.ExamAdapter;
-import com.broderickwestrope.whiteboard.exams.Listeners.DialogCloseListener;
 import com.broderickwestrope.whiteboard.exams.Models.ExamModel;
 import com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager;
+import com.broderickwestrope.whiteboard.student_records.DialogCloseListener;
 import com.broderickwestrope.whiteboard.student_records.MapsActivity;
 import com.broderickwestrope.whiteboard.student_records.Models.RecordModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -80,12 +80,9 @@ public class ViewRecordActivity extends AppCompatActivity implements DialogClose
         examsAdapter.setExams(examList); // Set the recycler view to contain these exams (using the adapter)
 
         // Set the onClick action for when a user wants to add a new exam
-        fabAddExam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Open the exam editor for a new exam (the editor knows it is new because we pass no bundle)
-                new ExamEditor(ViewRecordActivity.this, studentRecord.getId()).show(getSupportFragmentManager(), ExamEditor.TAG);
-            }
+        fabAddExam.setOnClickListener(v -> {
+            // Open the exam editor for a new exam (the editor knows it is new because we pass no bundle)
+            new ExamEditor(ViewRecordActivity.this, studentRecord.getId()).show(getSupportFragmentManager(), ExamEditor.TAG);
         });
     }
 
@@ -153,21 +150,13 @@ public class ViewRecordActivity extends AppCompatActivity implements DialogClose
     // Our function to handle when the user wants to delete all the exams
     private void deleteAll() {
         AlertDialog.Builder builder = new AlertDialog.Builder(examsAdapter.getContext());
-        builder.setTitle("Delete All Exams"); // The title of the alert box
-        builder.setMessage("Are you sure you want to delete all exams?\nThis action cannot be undone"); // The content of the alert box
+        builder.setTitle("Delete Selected Exams"); // The title of the alert box
+        builder.setMessage("Are you sure you want to delete the selected exams? If none are selected then all exams will be deleted.\nThis action cannot be undone"); // The content of the alert box
         // The positive button action
-        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                examsAdapter.deleteAll();
-            }
-        });
+        builder.setPositiveButton(android.R.string.yes, (dialog, which) -> examsAdapter.deleteSelected());
 
         // The positive button action
-        builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
+        builder.setNegativeButton(android.R.string.no, (dialog, which) -> {
         });
         AlertDialog dialog = builder.create(); // Build the alert
         dialog.show(); // Display the alert
