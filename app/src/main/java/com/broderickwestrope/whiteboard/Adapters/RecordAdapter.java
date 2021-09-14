@@ -14,13 +14,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.broderickwestrope.whiteboard.Editors.RecordEditor;
+import com.broderickwestrope.whiteboard.Models.RecordModel;
 import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.Utils.ExamDBManager;
-import com.broderickwestrope.whiteboard.exams.ViewRecordActivity;
-import com.broderickwestrope.whiteboard.Models.RecordModel;
-import com.broderickwestrope.whiteboard.Editors.RecordEditor;
-import com.broderickwestrope.whiteboard.student_records.RecordsActivity;
 import com.broderickwestrope.whiteboard.Utils.RecordDBManager;
+import com.broderickwestrope.whiteboard.exams.ViewRecordActivity;
+import com.broderickwestrope.whiteboard.student_records.RecordsActivity;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         this.examDB = examDB; // Set the exam database being used
     }
 
-    // Inflates (ie. sets up) the given record/card view
+    // Inflates (ie. sets up) the given record
     @NonNull
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_record, parent, false);
@@ -66,16 +66,13 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
 
         // Listen for clicks on the student record to see more about the
         // record including the students information and their exams
-        holder.card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Used to change activity to view all information about the selected record
-                viewRecord(item);
-            }
+        holder.card.setOnClickListener(v -> {
+            // Used to change activity to view all information about the selected record
+            viewRecord(item);
         });
     }
 
-    // Changes activity to see more about the record including the students information and their exams
+    // Change activity to see more about the record including the students information and their exams
     public void viewRecord(RecordModel record) {
         // Create a new intend and bundle to go to the new activity and pass the data to it
         Intent i = new Intent(activity, ViewRecordActivity.class);
@@ -125,32 +122,28 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         }).show();
     }
 
-    // Used to delete all record items
+    // Delete all of the records
     public void deleteAll() {
-        //Delete all records
-        int size = recordList.size();
-        for (int i = 0; i < size; i++) {
-            RecordModel item = recordList.get(i); // Get the item from the list
-            db.deleteRecord(item.getId()); // Remove the item from the database
+        int size = recordList.size(); // The number of records
+        for (int i = 0; i < size; i++) { // For all the records
+            RecordModel item = recordList.get(i); // Get the record from the list
+            db.deleteRecord(item.getId()); // Remove the record from the database
         }
-        recordList.clear(); // Remove the item from the list
-        notifyItemRangeRemoved(0, size); // Tell the recycler view that elements were removed at the given position
-
-        //Delete all exams
-        examDB.deleteAll();
+        recordList.clear(); // Remove the record from the list
+        notifyItemRangeRemoved(0, size); // Tell the recycler view that records were removed at the given position
     }
 
     // Edit the item at the given index
     public void editRecord(int index) {
         RecordModel item = recordList.get(index); // Get the record at the given index
-        Bundle bundle = new Bundle(); // Create a new bundle to hold our data (this is how we detect if we are editing or creating in the RecordEditor)
-        bundle.putInt("id", item.getId()); // Put the ID in the bundle
-        bundle.putString("name", item.getName()); // Put the name in the bundle
-        bundle.putString("gender", item.getGender()); // Put the gender in the bundle
-        bundle.putString("course", item.getCourse()); // Put the course in the bundle
-        bundle.putInt("age", item.getAge()); // Put the age in the bundle
+        Bundle bundle = new Bundle();                   // Create a new bundle to hold our data (this is how we detect if we are editing or creating in the RecordEditor)
+        bundle.putInt("id", item.getId());              // Put the ID in the bundle
+        bundle.putString("name", item.getName());       // Put the name in the bundle
+        bundle.putString("gender", item.getGender());   // Put the gender in the bundle
+        bundle.putString("course", item.getCourse());   // Put the course in the bundle
+        bundle.putInt("age", item.getAge());            // Put the age in the bundle
         bundle.putString("address", item.getAddress()); // Put the address in the bundle
-        bundle.putByteArray("image", item.getImage()); // Put the image in the bundle
+        bundle.putByteArray("image", item.getImage());  // Put the image in the bundle
 
         RecordEditor fragment = new RecordEditor(activity); // Create a new RecordEditor fragment
         fragment.setArguments(bundle); // Put the bundle in the fragment

@@ -55,22 +55,25 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         setRandomColor(holder.card);
 
         // Check if the location was set (since this is optional) and only display it if it has contents
-        String location = item.getLocation();
-        if (location != null)
-            holder.location.setText(location);
-        else
+        String location = item.getLocation(); // Get the location
+        if (location != null) // If its null
+            holder.location.setText(location); // Set the text
+        else // Else, disable the element
             holder.location.setEnabled(false);
 
-        // Listen for changes in the tasks' status
+        // Listen for changes in the checkbox
         holder.task.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // Update the status of the database item
             db.updateStatus(item.getId(), (isChecked ? 1 : 0));
         });
 
+        // Listen for clicks on the 'card'
         holder.card.setOnClickListener(v -> {
+            // Toggle the checkbox
             holder.task.setChecked(!holder.task.isChecked());
         });
 
+        // Listen for long-clicks on the 'card'
         holder.card.setOnLongClickListener((v) -> {
             // Select a random color for card background (from the given array) :)
             setRandomColor(holder.card);
@@ -78,12 +81,12 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         });
     }
 
+    // Select a random color for card background (from the given array) :)
     private void setRandomColor(View v) {
-        // Select a random color for card background (from the given array) :)
-        Random random = new Random();
-        String[] colorArray = getContext().getResources().getStringArray(R.array.card_colors);
-        String randomColorName = colorArray[random.nextInt(colorArray.length)];
-        v.setBackgroundColor(Color.parseColor(randomColorName));
+        Random random = new Random(); // Create a new instance of random
+        String[] colorArray = getContext().getResources().getStringArray(R.array.card_colors); // Get the array of colors
+        String randomColorName = colorArray[random.nextInt(colorArray.length)]; // Select a random color from the array
+        v.setBackgroundColor(Color.parseColor(randomColorName)); // Set the background to the random color
     }
 
     // Returns the number of tasks in our list of tasks (ie. the length of the to-do list)
@@ -93,7 +96,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     // Set the local list of tasks to the given list of tasks
     public void setTasks(List<TaskModel> todoList) {
-        this.taskList = todoList; // Set local to the given tasks
+        this.taskList = todoList; // Set the list of tasks
         notifyDataSetChanged(); // Notify any concerned members that the data has changed (this is mainly for updating the recycler view)
     }
 
@@ -112,7 +115,7 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
                 db.insertTask(item); // Add to the database
                 notifyItemInserted(taskList.size() - 1); // Update the recycler view
             }
-        }).show();
+        }).show(); // Display the message
 
     }
 
