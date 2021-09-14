@@ -32,8 +32,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.student_records.Models.RecordModel;
-import com.broderickwestrope.whiteboard.student_records.Utils.RecordDBManager;
+import com.broderickwestrope.whiteboard.Interfaces.DialogCloseListener;
+import com.broderickwestrope.whiteboard.Models.RecordModel;
+import com.broderickwestrope.whiteboard.Utils.RecordDBManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.io.ByteArrayOutputStream;

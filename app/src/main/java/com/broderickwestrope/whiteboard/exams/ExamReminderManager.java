@@ -16,8 +16,8 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.exams.Listeners.ExamReminderReceiver;
-import com.broderickwestrope.whiteboard.exams.Models.ExamModel;
+import com.broderickwestrope.whiteboard.Interfaces.ExamReminderReceiver;
+import com.broderickwestrope.whiteboard.Models.ExamModel;
 import com.broderickwestrope.whiteboard.student_records.RecordsActivity;
 
 import java.util.Calendar;

@@ -1,13 +1,9 @@
 package com.broderickwestrope.whiteboard.student_records;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Vibrator;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -16,7 +12,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.student_records.Adapters.RecordAdapter;
+import com.broderickwestrope.whiteboard.Adapters.RecordAdapter;
 
 // THis is a touch helper, allowing us to have swipe actions for our records (such as edit and delete)
 public class RecordTouchHelper extends ItemTouchHelper.SimpleCallback {

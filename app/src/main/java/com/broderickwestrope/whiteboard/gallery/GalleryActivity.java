@@ -22,8 +22,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.gallery.Adapters.GalleryAdapter;
-import com.broderickwestrope.whiteboard.student_records.Utils.RecordDBManager;
+import com.broderickwestrope.whiteboard.Adapters.GalleryAdapter;
+import com.broderickwestrope.whiteboard.Utils.RecordDBManager;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.ByteArrayOutputStream;

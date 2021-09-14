@@ -15,9 +15,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.student_records.Adapters.RecordAdapter;
-import com.broderickwestrope.whiteboard.student_records.Models.RecordModel;
-import com.broderickwestrope.whiteboard.student_records.Utils.RecordDBManager;
+import com.broderickwestrope.whiteboard.Interfaces.DialogCloseListener;
+import com.broderickwestrope.whiteboard.Utils.ExamDBManager;
+import com.broderickwestrope.whiteboard.Adapters.RecordAdapter;
+import com.broderickwestrope.whiteboard.Models.RecordModel;
+import com.broderickwestrope.whiteboard.Utils.RecordDBManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class RecordsActivity extends AppCompatActivity implements DialogCloseLis
     private RecordAdapter recordsAdapter; // The wrapper/adapter between the database and the recycler view
     private List<RecordModel> recordList; // A list of all of our records
     private RecordDBManager db; // Our database manager for the records (using SQLite)
-    private com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager examDB; // Our database manager for the exams (using SQLite)
+    private ExamDBManager examDB; // Our database manager for the exams (using SQLite)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,7 @@ public class RecordsActivity extends AppCompatActivity implements DialogCloseLis
         db.openDatabase();
 
         // Create our exam database manager and open it for use
-        examDB = new com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager(this);
+        examDB = new ExamDBManager(this);
         examDB.openDatabase();
 
         // Get the view of our "delete all" button (the bin symbol)

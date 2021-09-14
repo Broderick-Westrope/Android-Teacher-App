@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.student_records;
+package com.broderickwestrope.whiteboard.Interfaces;
 
 import android.content.DialogInterface;
 

@@ -21,12 +21,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.exams.Adapters.ExamAdapter;
-import com.broderickwestrope.whiteboard.exams.Models.ExamModel;
-import com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager;
-import com.broderickwestrope.whiteboard.student_records.DialogCloseListener;
+import com.broderickwestrope.whiteboard.Adapters.ExamAdapter;
+import com.broderickwestrope.whiteboard.Models.ExamModel;
+import com.broderickwestrope.whiteboard.Utils.ExamDBManager;
+import com.broderickwestrope.whiteboard.Interfaces.DialogCloseListener;
 import com.broderickwestrope.whiteboard.student_records.MapsActivity;
-import com.broderickwestrope.whiteboard.student_records.Models.RecordModel;
+import com.broderickwestrope.whiteboard.Models.RecordModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;

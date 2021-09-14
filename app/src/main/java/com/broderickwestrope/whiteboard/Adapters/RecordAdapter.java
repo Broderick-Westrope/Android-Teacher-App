@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.student_records.Adapters;
+package com.broderickwestrope.whiteboard.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,11 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
+import com.broderickwestrope.whiteboard.Utils.ExamDBManager;
 import com.broderickwestrope.whiteboard.exams.ViewRecordActivity;
-import com.broderickwestrope.whiteboard.student_records.Models.RecordModel;
+import com.broderickwestrope.whiteboard.Models.RecordModel;
 import com.broderickwestrope.whiteboard.student_records.RecordEditor;
 import com.broderickwestrope.whiteboard.student_records.RecordsActivity;
-import com.broderickwestrope.whiteboard.student_records.Utils.RecordDBManager;
+import com.broderickwestrope.whiteboard.Utils.RecordDBManager;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -28,14 +29,14 @@ import java.util.Random;
 // The wrapper/adapter between the database and the recycler view
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder> {
 
-    private final com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager examDB;  // The database manager for the exams (using SQLite)
+    private final ExamDBManager examDB;  // The database manager for the exams (using SQLite)
     private List<RecordModel> recordList; // A list of all of our records
     private Activity activity; // The activity that is using this adapter to display the records
     private RecordDBManager db;  // Our database manager for the records (using SQLite)
 
 
     // Class constructor
-    public RecordAdapter(RecordDBManager db, Activity activity, com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager examDB) {
+    public RecordAdapter(RecordDBManager db, Activity activity, ExamDBManager examDB) {
         this.activity = activity; // Set the containing activity
         this.db = db; // Set the database being used
         this.examDB = examDB; // Set the exam database being used

@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.todo_list.Adapters;
+package com.broderickwestrope.whiteboard.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -15,10 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.todo_list.Models.TaskModel;
+import com.broderickwestrope.whiteboard.Models.TaskModel;
 import com.broderickwestrope.whiteboard.todo_list.TaskEditor;
 import com.broderickwestrope.whiteboard.todo_list.TodoActivity;
-import com.broderickwestrope.whiteboard.todo_list.Utils.TaskDBManager;
+import com.broderickwestrope.whiteboard.Utils.TaskDBManager;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;

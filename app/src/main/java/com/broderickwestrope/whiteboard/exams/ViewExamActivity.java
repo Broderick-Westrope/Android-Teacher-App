@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.exams.Models.ExamModel;
+import com.broderickwestrope.whiteboard.Models.ExamModel;
 
 public class ViewExamActivity extends AppCompatActivity {
 

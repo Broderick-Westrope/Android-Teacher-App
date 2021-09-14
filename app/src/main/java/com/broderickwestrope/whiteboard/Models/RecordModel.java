@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.student_records.Models;
+package com.broderickwestrope.whiteboard.Models;
 
 import android.util.Log;
 

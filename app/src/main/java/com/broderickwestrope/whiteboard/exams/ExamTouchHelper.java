@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.exams.Adapters.ExamAdapter;
+import com.broderickwestrope.whiteboard.Adapters.ExamAdapter;
 
 // This is a touch helper, allowing us to have swipe actions for our exams (such as edit and delete)
 public class ExamTouchHelper extends ItemTouchHelper.SimpleCallback {

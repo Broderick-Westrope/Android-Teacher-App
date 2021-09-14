@@ -21,10 +21,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 
+import com.broderickwestrope.whiteboard.Interfaces.DialogCloseListener;
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.exams.Listeners.DialogCloseListener;
-import com.broderickwestrope.whiteboard.exams.Models.ExamModel;
-import com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager;
+import com.broderickwestrope.whiteboard.Models.ExamModel;
+import com.broderickwestrope.whiteboard.Utils.ExamDBManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.Calendar;

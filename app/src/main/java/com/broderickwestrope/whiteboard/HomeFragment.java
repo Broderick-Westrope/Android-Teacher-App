@@ -11,10 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.exams.Adapters.ExamAdapter;
-import com.broderickwestrope.whiteboard.exams.Models.ExamModel;
-import com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager;
+import com.broderickwestrope.whiteboard.Adapters.ExamAdapter;
+import com.broderickwestrope.whiteboard.Models.ExamModel;
+import com.broderickwestrope.whiteboard.Utils.ExamDBManager;
 
 import java.util.ArrayList;
 import java.util.Calendar;

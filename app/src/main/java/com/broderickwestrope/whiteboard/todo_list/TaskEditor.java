@@ -16,9 +16,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import com.broderickwestrope.whiteboard.Interfaces.DialogCloseListener;
 import com.broderickwestrope.whiteboard.R;
-import com.broderickwestrope.whiteboard.todo_list.Models.TaskModel;
-import com.broderickwestrope.whiteboard.todo_list.Utils.TaskDBManager;
+import com.broderickwestrope.whiteboard.Models.TaskModel;
+import com.broderickwestrope.whiteboard.Utils.TaskDBManager;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import java.util.Objects;

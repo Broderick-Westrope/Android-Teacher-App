@@ -57,7 +57,7 @@
             android:exported="true"
             android:theme="@style/Theme.Whiteboard.BranchNoActionBar" />
 
-        <receiver android:name=".exams.Listeners.ExamReminderReceiver" />
+        <receiver android:name=".Interfaces.ExamReminderReceiver" />
 
         <meta-data
             android:name="preloaded_fonts"

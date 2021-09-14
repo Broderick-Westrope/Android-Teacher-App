@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.exams.Adapters;
+package com.broderickwestrope.whiteboard.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,8 +21,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.exams.ExamEditor;
-import com.broderickwestrope.whiteboard.exams.Models.ExamModel;
-import com.broderickwestrope.whiteboard.exams.Utils.ExamDBManager;
+import com.broderickwestrope.whiteboard.Models.ExamModel;
+import com.broderickwestrope.whiteboard.Utils.ExamDBManager;
 import com.broderickwestrope.whiteboard.exams.ViewExamActivity;
 import com.broderickwestrope.whiteboard.exams.ViewRecordActivity;
 import com.google.android.material.snackbar.Snackbar;

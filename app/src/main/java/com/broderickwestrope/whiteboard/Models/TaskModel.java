@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.todo_list.Models;
+package com.broderickwestrope.whiteboard.Models;
 
 // The model of what a task will contain
 public class TaskModel {

@@ -1,4 +1,4 @@
-package com.broderickwestrope.whiteboard.student_records.Utils;
+package com.broderickwestrope.whiteboard.Utils;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.broderickwestrope.whiteboard.student_records.Models.RecordModel;
+import com.broderickwestrope.whiteboard.Models.RecordModel;
 
 import java.util.ArrayList;
 import java.util.List;
