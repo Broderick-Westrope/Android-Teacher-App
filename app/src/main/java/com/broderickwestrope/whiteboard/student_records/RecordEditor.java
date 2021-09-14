@@ -151,7 +151,7 @@ public class RecordEditor extends BottomSheetDialogFragment {
             String address = editRecord_Address.getText().toString(); // Get the address
 
             if (finalIsUpdate && bundle.getInt("id") == studentID) { // If we are updating an existing record and the student ID hasn't been changed
-                db.updateRecord(bundle.getInt("id"), name, gender, course, age, address, studentImage); // Update the elements of the record
+                db.updateRecord(bundle.getInt("id"), name, gender, course, age, address); // Update the elements of the record
             } else { // Else, if we are adding a new record
                 RecordModel record = new RecordModel(); // Create a new record
                 // Set the values of the new record

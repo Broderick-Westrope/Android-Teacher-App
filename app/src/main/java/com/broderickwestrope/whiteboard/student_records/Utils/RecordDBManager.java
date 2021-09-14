@@ -107,7 +107,7 @@ public class RecordDBManager extends SQLiteOpenHelper {
     }
 
     // Update the name/description of the specified record (using that records ID)
-    public void updateRecord(int id, String name, String gender, String course, int age, String address, byte[] image) {
+    public void updateRecord(int id, String name, String gender, String course, int age, String address) {
         ContentValues cv = new ContentValues(); // We use CV's to store our values
         cv.put(ID, id); // Add the student ID
         cv.put(NAME, name); // Add the name
@@ -115,40 +115,11 @@ public class RecordDBManager extends SQLiteOpenHelper {
         cv.put(COURSE, course); // Add the course
         cv.put(AGE, age); // Add the age
         cv.put(ADDRESS, address); // Add the address
-        cv.put(IMAGE, image); // Add the image
         db.update(RECORDS_TABLE, cv, ID + "=?", new String[]{String.valueOf(id)}); // Update the contents of the specified ID
     }
 
     // Delete the record of the specified ID
     public void deleteRecord(int id) {
         db.delete(RECORDS_TABLE, ID + "=?", new String[]{String.valueOf(id)});
-    }
-
-    public boolean updateImage(int id, byte[] data) {
-        ContentValues cv = new ContentValues(); // We use CV's to store our values
-        db.beginTransaction();
-        // This cursor "points" to the result of our SQL query
-        // By setting all the values to null we select the entire database with no extra criteria (other than ordering them by ID)
-        try (Cursor cursor = db.query(RECORDS_TABLE, null, null, null, null, null, ID + " ASC")) {
-            if (cursor != null) // If the cursor is not empty then it means we successfully selected some data
-            {
-                if (cursor.moveToFirst()) // Move the cursor to the first row (from the last row). False if the cursor is empty
-                {
-                    cv.put(ID, id); // Add the student ID
-                    cv.put(NAME, cursor.getString(cursor.getColumnIndex(NAME))); // Add the name
-                    cv.put(GENDER, cursor.getString(cursor.getColumnIndex(GENDER))); // Add the gender
-                    cv.put(COURSE, cursor.getString(cursor.getColumnIndex(COURSE))); // Add the course
-                    cv.put(AGE, cursor.getInt(cursor.getColumnIndex(AGE))); // Add the age
-                    cv.put(ADDRESS, cursor.getString(cursor.getColumnIndex(ADDRESS))); // Add the address
-                }
-            }
-        } finally {
-            // Once we have all the elements within the query, we want to end the transaction and close the cursor
-            db.endTransaction();
-        }
-
-        cv.put(IMAGE, data); // Add the image
-        // Update the contents of the specified ID
-        return db.update(RECORDS_TABLE, cv, ID + "=?", new String[]{String.valueOf(id)}) > 0;
     }
 }

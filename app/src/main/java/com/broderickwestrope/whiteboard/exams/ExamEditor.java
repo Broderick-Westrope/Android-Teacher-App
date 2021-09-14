@@ -147,7 +147,12 @@ public class ExamEditor extends BottomSheetDialogFragment {
         });
 
         // Listen for clicks on the text view for changing the date
-        editExam_Date.setOnClickListener(v -> onDateClicked());
+        editExam_Date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onDateClicked();
+            }
+        });
 
         // This is the listener that is called when the user chooses a date for the exam using the date picker dialog
         dateSetListener = (view12, year, month, dayOfMonth) -> setDate(year, month, dayOfMonth);

@@ -51,6 +51,7 @@
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/mirage2"
+
         android:textColorHint="@color/pickled_bluewood" />
 
     <EditText
