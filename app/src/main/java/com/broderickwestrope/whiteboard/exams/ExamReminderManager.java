@@ -15,60 +15,69 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
-import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.Interfaces.ExamReminderReceiver;
 import com.broderickwestrope.whiteboard.Models.ExamModel;
+import com.broderickwestrope.whiteboard.R;
 import com.broderickwestrope.whiteboard.student_records.RecordsActivity;
 
 import java.util.Calendar;
 
-public class ExamReminderManager extends ContextWrapper { //TODO comment this whole class
-    public static final String channelID = "examReminderChannelID";
-    public static final String channelName = "Exam Reminders";
-    //    ExamReminderReceiver receiver;
-    Context context;
-    private NotificationManager mManager;
+// Class to handle our notifications for reminding users they have an upcoming exam
+public class ExamReminderManager extends ContextWrapper {
+    public static final String channelID = "examReminderChannelID"; // The ID of the channel we use for the notifications
+    public static final String channelName = "Exam Reminders"; // The name of the channel we use for the notifications
+    Context context; // The context from which the class is being used
+    private NotificationManager notificationManager; // Handles notifying the user
 
-    public ExamReminderManager(Context base) {
-        super(base);
-        context = base;
+    // Class constructor
+    public ExamReminderManager(Context context) {
+        super(context);
+        this.context = context; // Set the context the class is being used in
+        // If we are using a device with high enough version for notification channels
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createChannel();
+            createChannel(); // Create a new channel
         }
     }
 
+    // Create a new channel
     @TargetApi(Build.VERSION_CODES.O)
     private void createChannel() {
+        // Create the notification channel using the global variables and giving it high importance
         NotificationChannel channel = new NotificationChannel(channelID, channelName, NotificationManager.IMPORTANCE_HIGH);
-
-        getManager().createNotificationChannel(channel);
+        getManager().createNotificationChannel(channel); // Get the manager and submit the channel for creation
     }
 
+    // Get the notification manager
     public NotificationManager getManager() {
-        if (mManager == null)
-            mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        return mManager;
+        if (notificationManager == null) // If it doesnt exist, create one
+            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        return notificationManager; // Return the notification manager
     }
 
-
+    // Set an exam reminder
     public void setReminder(Calendar c, ExamModel exam) {
+        // Create the notification object
         Notification notification = getNotification(exam.getName(), exam.getUnit(), exam.getDate(), exam.getTime());
 
+        // Create a new alarm manager (this is how we handle setting the alarm for the future)
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, ExamReminderReceiver.class);
-        Bundle b = new Bundle();
-        b.putParcelable("notification", notification);
-        intent.putExtras(b);
+        Intent intent = new Intent(context, ExamReminderReceiver.class); // Create an intent for receiving the notification
+        Bundle b = new Bundle(); // Create a bundle to hold the extras
+        b.putParcelable("notification", notification); // Store the notification object as a parcelable in the bundle
+        intent.putExtras(b); // Put the extras in the intent
+        // Create a new pending intent (ie. an intent for future use)
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
 
+        // Set the notification for an exact point in time (given in milliseconds).
         // We use RTC_WAKEUP to turn the screen on when the phone is asleep on notification
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
 
+        // Display that the notification was set successfully
         Toast.makeText(context, "Reminder set for " + exam.getName(), Toast.LENGTH_LONG).show();
     }
 
 
-    // Creates a notification (using NotificationCompat.Builder) for an exam with the given text.
+    // Creates a notification object (using NotificationCompat.Builder) for an exam with the given values
     private Notification getNotification(String name, String unit, String date, String time) {
         // This schedules a notification when the exam is edited using our function to determine when
         String smallContent = "Don't forget about \"" + name + "\" for " + unit;
